@@ -1,5 +1,24 @@
-enum FileDirectories { profilePicture }
+import 'package:flutter/material.dart';
+import 'package:instagram_clone/screens/bottomNav/add_post_screen.dart';
 
-enum DBCollections { users }
+enum FileDirectories { profilePicture, postPicture }
+
+enum DBCollections { users, posts }
 
 const userIcon = 'https://cdn-icons-png.freepik.com/512/8742/8742495.png';
+
+const bottomNavPages = [
+  Center(
+    child: Text("Home page"),
+  ),
+  Center(
+    child: Text("search page"),
+  ),
+  AddPostScreen(),
+  Center(
+    child: Text("favorite page"),
+  ),
+  Center(
+    child: Text("profile page"),
+  ),
+];

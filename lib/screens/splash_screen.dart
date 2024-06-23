@@ -35,10 +35,6 @@ class _SplashScreenState extends State<SplashScreen> {
           'assets/ic_instagram.svg',
           colorFilter: const ColorFilter.mode(primaryColor, BlendMode.srcIn),
         ),
-        const SizedBox(
-          height: 10,
-        ),
-        const CircularProgressIndicator()
       ]),
     ));
   }

@@ -52,4 +52,14 @@ class AuthServices {
       showToast(e.toString());
     }
   }
+
+  Future<user_model.User> getUserDetails() async {
+    final CollectionReference users =
+        _firestore.collection(DBCollections.users.name);
+    final DocumentSnapshot snapshot =
+        await users.doc(_auth.currentUser!.uid).get();
+    final snapData =
+        snapshot.data() as Map<String, dynamic>; // Map is a subclass of Object
+    return user_model.User.fromJson(snapData);
+  }
 }
