@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instagram_clone/models/comment.dart';
 import 'package:instagram_clone/models/post.dart';
 import 'package:instagram_clone/services/upload_file.dart';
 import 'package:instagram_clone/utils/apputils.dart';
@@ -29,7 +30,8 @@ class PostServices {
           postId: postId,
           datePublished: DateTime.now(),
           photoUrl: photoUrl,
-          profileImage: profileImage);
+          profileImage: profileImage,
+          commentCount: 0);
       await posts.doc(postId).set(newPost.toJson());
     } catch (e) {
       showToast(e.toString());
@@ -56,6 +58,66 @@ class PostServices {
   Future<void> deletePost({required String postId}) async {
     try {
       await posts.doc(postId).delete();
+    } catch (e) {
+      showToast(e.toString());
+    }
+  }
+
+  Future<void> addComment(
+      {required String postId,
+      required String content,
+      required String username,
+      required String uid,
+      required String profilePic}) async {
+    try {
+      final commentId = const Uuid().v1();
+      final cmnt = Comment(
+          username: username,
+          uid: uid,
+          profilePic: profilePic,
+          content: content,
+          commentId: commentId,
+          datePublished: DateTime.now(),
+          likes: []);
+      await posts
+          .doc(postId)
+          .collection(DBCollections.comments.name)
+          .doc(commentId)
+          .set(cmnt.toJson());
+      await posts.doc(postId).update({'commentCount': FieldValue.increment(1)});
+    } catch (e) {
+      showToast(e.toString());
+    }
+  }
+
+  Future<void> likeComment({
+    required String postId,
+    required String commentId,
+    required String uid,
+  }) async {
+    try {
+      final comment = await posts
+          .doc(postId)
+          .collection(DBCollections.comments.name)
+          .doc(commentId)
+          .get();
+      if (comment['likes'].contains(uid)) {
+        await posts
+            .doc(postId)
+            .collection(DBCollections.comments.name)
+            .doc(commentId)
+            .update({
+          'likes': FieldValue.arrayRemove([uid])
+        });
+      } else {
+        await posts
+            .doc(postId)
+            .collection(DBCollections.comments.name)
+            .doc(commentId)
+            .update({
+          'likes': FieldValue.arrayUnion([uid])
+        });
+      }
     } catch (e) {
       showToast(e.toString());
     }

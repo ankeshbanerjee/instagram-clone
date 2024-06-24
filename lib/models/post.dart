@@ -7,28 +7,31 @@ class Post {
   final DateTime datePublished;
   final String photoUrl;
   final String profileImage;
+  final int commentCount;
 
-  const Post({
-    required this.description,
-    required this.uid,
-    required this.username,
-    required this.likes,
-    required this.postId,
-    required this.datePublished,
-    required this.photoUrl,
-    required this.profileImage,
-  });
+  const Post(
+      {required this.description,
+      required this.uid,
+      required this.username,
+      required this.likes,
+      required this.postId,
+      required this.datePublished,
+      required this.photoUrl,
+      required this.profileImage,
+      required this.commentCount});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-        description: json["description"],
-        uid: json["uid"],
-        likes: json["likes"],
-        postId: json["postId"],
-        datePublished: json["datePublished"].toDate(),
-        username: json["username"],
-        photoUrl: json['photoUrl'],
-        profileImage: json['profileImage']);
+      description: json["description"],
+      uid: json["uid"],
+      likes: json["likes"],
+      postId: json["postId"],
+      datePublished: json["datePublished"].toDate(),
+      username: json["username"],
+      photoUrl: json['photoUrl'],
+      profileImage: json['profileImage'],
+      commentCount: json['commentCount'],
+    );
   }
 
   Map<String, dynamic> toJson() => {
@@ -39,6 +42,7 @@ class Post {
         "postId": postId,
         "datePublished": datePublished,
         'photoUrl': photoUrl,
-        'profileImage': profileImage
+        'profileImage': profileImage,
+        'commentCount': commentCount
       };
 }

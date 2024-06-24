@@ -182,8 +182,11 @@ class _PostCardState extends State<PostCard> {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(left: 10, bottom: 4),
           child: InkWell(
-            onTap: () {},
-            child: Text('View all 1234 comments',
+            onTap: () {
+              Navigator.of(context).pushNamed(CommentScreen.routeName,
+                  arguments: CommentScreenArgs(postId: postItem.postId));
+            },
+            child: Text('View all ${postItem.commentCount} comments',
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium

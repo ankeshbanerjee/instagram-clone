@@ -5,6 +5,7 @@ class Comment {
   final String content;
   final String commentId;
   final DateTime datePublished;
+  final List likes;
 
   const Comment(
       {required this.username,
@@ -12,7 +13,8 @@ class Comment {
       required this.profilePic,
       required this.content,
       required this.commentId,
-      required this.datePublished});
+      required this.datePublished,
+      required this.likes});
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
@@ -21,7 +23,8 @@ class Comment {
         profilePic: json['profilePic'],
         content: json['content'],
         commentId: json['commentId'],
-        datePublished: json['datePublished']);
+        datePublished: json['datePublished'].toDate(),
+        likes: json['likes']);
   }
 
   Map<String, dynamic> toJson() {
@@ -31,7 +34,8 @@ class Comment {
       'profilePic': profilePic,
       'content': content,
       'commentId': commentId,
-      'datePublished': datePublished
+      'datePublished': datePublished,
+      'likes': likes
     };
   }
 }
