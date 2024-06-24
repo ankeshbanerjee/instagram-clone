@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/utils/colors.dart';
@@ -5,7 +6,7 @@ import 'package:instagram_clone/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  static String routeName = '/';
+  static String routeName = '/home';
   const HomeScreen({super.key});
 
   @override
@@ -14,7 +15,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int pageIndex = 0;
-  final double iconSize = 30;
   bool isLoading = true;
 
   Future<void> loadUser() async {
@@ -37,115 +37,73 @@ class _HomeScreenState extends State<HomeScreen> {
             child: CircularProgressIndicator(),
           )
         : Scaffold(
+            // body: IndexedStack(
+            //     index: pageIndex,
+            //     children:
+            //         bottomNavPages), // state of each page is kept intact even after navigating to another screen
             body: bottomNavPages[pageIndex],
-            bottomNavigationBar: Container(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).padding.bottom, top: 6),
-                decoration: const BoxDecoration(
-                    color: mobileBackgroundColor,
-                    border: Border(
-                        top: BorderSide(width: 0.25, color: secondaryColor))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      enableFeedback: false,
-                      onPressed: () {
-                        setState(() {
-                          pageIndex = 0;
-                        });
-                      },
-                      icon: pageIndex == 0
-                          ? Icon(
-                              Icons.home,
-                              size: iconSize,
-                              color: primaryColor,
-                            )
-                          : Icon(
-                              Icons.home_outlined,
-                              size: iconSize,
-                              color: secondaryColor,
-                            ),
+            bottomNavigationBar: CupertinoTabBar(
+              height: 60,
+              currentIndex: pageIndex,
+              onTap: (value) => setState(() {
+                pageIndex = value;
+              }),
+              backgroundColor: mobileBackgroundColor,
+              iconSize: 30.0,
+              border: const Border(
+                  top: BorderSide(color: secondaryColor, width: 0.25)),
+              items: const [
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.home_outlined,
+                      color: secondaryColor,
                     ),
-                    IconButton(
-                      enableFeedback: false,
-                      onPressed: () {
-                        setState(() {
-                          pageIndex = 1;
-                        });
-                      },
-                      icon: pageIndex == 1
-                          ? Icon(
-                              Icons.search,
-                              size: iconSize,
-                              color: primaryColor,
-                            )
-                          : Icon(
-                              Icons.search_outlined,
-                              size: iconSize,
-                              color: secondaryColor,
-                            ),
-                    ),
-                    IconButton(
-                      enableFeedback: false,
-                      onPressed: () {
-                        setState(() {
-                          pageIndex = 2;
-                        });
-                      },
-                      icon: pageIndex == 2
-                          ? Icon(
-                              Icons.add_circle,
-                              size: iconSize,
-                              color: primaryColor,
-                            )
-                          : Icon(
-                              Icons.add_circle_outline,
-                              size: iconSize,
-                              color: secondaryColor,
-                            ),
-                    ),
-                    IconButton(
-                      enableFeedback: false,
-                      onPressed: () {
-                        setState(() {
-                          pageIndex = 3;
-                        });
-                      },
-                      icon: pageIndex == 3
-                          ? Icon(
-                              Icons.favorite,
-                              size: iconSize,
-                              color: primaryColor,
-                            )
-                          : Icon(
-                              Icons.favorite_outline,
-                              size: iconSize,
-                              color: secondaryColor,
-                            ),
-                    ),
-                    IconButton(
-                      enableFeedback: false,
-                      onPressed: () {
-                        setState(() {
-                          pageIndex = 4;
-                        });
-                      },
-                      icon: pageIndex == 4
-                          ? Icon(
-                              Icons.person,
-                              size: iconSize,
-                              color: primaryColor,
-                            )
-                          : Icon(
-                              Icons.person_outline,
-                              size: iconSize,
-                              color: secondaryColor,
-                            ),
-                    ),
-                  ],
-                )),
+                    activeIcon: Icon(
+                      Icons.home,
+                      color: primaryColor,
+                    )),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.search_outlined,
+                    color: secondaryColor,
+                  ),
+                  activeIcon: Icon(
+                    Icons.search,
+                    color: primaryColor,
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.add_circle_outline,
+                    color: secondaryColor,
+                  ),
+                  activeIcon: Icon(
+                    Icons.add_circle,
+                    color: primaryColor,
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.favorite_outline,
+                    color: secondaryColor,
+                  ),
+                  activeIcon: Icon(
+                    Icons.favorite,
+                    color: primaryColor,
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.person_outline,
+                    color: secondaryColor,
+                  ),
+                  activeIcon: Icon(
+                    Icons.person,
+                    color: primaryColor,
+                  ),
+                ),
+              ],
+            ),
           );
   }
 }

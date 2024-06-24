@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/firebase_options.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
-import 'package:instagram_clone/routes.dart';
+import 'package:instagram_clone/router/routes.dart';
 import 'package:instagram_clone/screens/splash_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:provider/provider.dart';

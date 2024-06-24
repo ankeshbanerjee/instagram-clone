@@ -25,7 +25,7 @@ class Post {
         uid: json["uid"],
         likes: json["likes"],
         postId: json["postId"],
-        datePublished: json["datePublished"],
+        datePublished: json["datePublished"].toDate(),
         username: json["username"],
         photoUrl: json['photoUrl'],
         profileImage: json['profileImage']);

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instagram_clone/models/post.dart';
 import 'package:instagram_clone/services/upload_file.dart';
@@ -32,6 +31,31 @@ class PostServices {
           photoUrl: photoUrl,
           profileImage: profileImage);
       await posts.doc(postId).set(newPost.toJson());
+    } catch (e) {
+      showToast(e.toString());
+    }
+  }
+
+  Future<void> likePost({required String postId, required String uid}) async {
+    try {
+      final post = await posts.doc(postId).get();
+      if (!post['likes'].contains(uid)) {
+        await posts.doc(postId).update({
+          'likes': FieldValue.arrayUnion([uid])
+        });
+      } else {
+        await posts.doc(postId).update({
+          'likes': FieldValue.arrayRemove([uid])
+        });
+      }
+    } catch (e) {
+      showToast(e.toString());
+    }
+  }
+
+  Future<void> deletePost({required String postId}) async {
+    try {
+      await posts.doc(postId).delete();
     } catch (e) {
       showToast(e.toString());
     }
