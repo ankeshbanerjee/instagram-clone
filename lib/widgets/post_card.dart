@@ -136,15 +136,15 @@ class _PostCardState extends State<PostCard> {
                       arguments: CommentScreenArgs(postId: postItem.postId));
                 },
                 icon: const Icon(
-                  Icons.mode_comment_outlined,
+                  Icons.comment_outlined,
                   size: 30,
                 )),
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.send_outlined,
-                  size: 30,
-                )),
+            // IconButton(
+            //     onPressed: () {},
+            //     icon: const Icon(
+            //       Icons.send_outlined,
+            //       size: 30,
+            //     )),
             const Spacer(),
             IconButton(
                 onPressed: () {},

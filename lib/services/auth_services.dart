@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -44,13 +45,9 @@ class AuthServices {
   }
 
   Future<void> loginUser(String email, String password) async {
-    try {
-      final authRes = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      print(authRes.user!.uid);
-    } catch (e) {
-      showToast(e.toString());
-    }
+    final authRes = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
+    print(authRes.user!.uid);
   }
 
   Future<user_model.User> getUserDetails() async {
@@ -61,5 +58,14 @@ class AuthServices {
     final snapData =
         snapshot.data() as Map<String, dynamic>; // Map is a subclass of Object
     return user_model.User.fromJson(snapData);
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+      showToast("Signed out!");
+    } catch (e) {
+      showToast(e.toString());
+    }
   }
 }

@@ -10,5 +10,5 @@ final Map<String, WidgetBuilder> routes = {
   LoginScreen.routeName: (context) => const LoginScreen(),
   RegisterScreen.routeName: (context) => const RegisterScreen(),
   HomeScreen.routeName: (context) => const HomeScreen(),
-  CommentScreen.routeName: (context) => const CommentScreen()
+  CommentScreen.routeName: (context) => const CommentScreen(),
 };

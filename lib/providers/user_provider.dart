@@ -16,4 +16,8 @@ class UserProvider extends ChangeNotifier {
       showToast(e.toString());
     }
   }
+
+  void removeUser() {
+    _user = null;
+  }
 }

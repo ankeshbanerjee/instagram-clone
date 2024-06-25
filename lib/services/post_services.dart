@@ -122,4 +122,16 @@ class PostServices {
       showToast(e.toString());
     }
   }
+
+  Future<List<Post>> getPostsByUid(String uid) async {
+    try {
+      final postsDocs = await posts.where('uid', isEqualTo: uid).get();
+      final res = postsDocs.docs
+          .map((e) => Post.fromJson(e.data() as Map<String, dynamic>));
+      return res.toList();
+    } catch (e) {
+      showToast(e.toString());
+      return [];
+    }
+  }
 }
