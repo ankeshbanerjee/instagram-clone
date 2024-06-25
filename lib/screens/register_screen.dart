@@ -53,7 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         Navigator.pop(context);
       }
     } catch (e) {
-      print(e.toString());
+      showToast(e.toString());
       setState(() {
         isLoading = false;
       });

@@ -19,35 +19,31 @@ class AuthServices {
     required File? profilePicture,
     required String bio,
   }) async {
-    try {
-      final authRes = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+    final authRes = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
 
-      final String picUrl = profilePicture != null
-          ? await upload(profilePicture, FileDirectories.profilePicture.name)
-          : userIcon;
+    final String picUrl = profilePicture != null
+        ? await upload(profilePicture, FileDirectories.profilePicture.name)
+        : userIcon;
 
-      final user = user_model.User(
-          username: username,
-          email: email,
-          uid: authRes.user!.uid,
-          bio: bio,
-          profilePicture: picUrl,
-          followers: [],
-          following: []);
+    final user = user_model.User(
+        username: username,
+        email: email,
+        uid: authRes.user!.uid,
+        bio: bio,
+        profilePicture: picUrl,
+        followers: [],
+        following: []);
 
-      CollectionReference usersRef =
-          _firestore.collection(DBCollections.users.name);
-      await usersRef.doc(authRes.user!.uid).set(user.toJson());
-    } catch (e) {
-      showToast(e.toString());
-    }
+    CollectionReference usersRef =
+        _firestore.collection(DBCollections.users.name);
+    await usersRef.doc(authRes.user!.uid).set(user.toJson());
   }
 
   Future<void> loginUser(String email, String password) async {
     final authRes = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
-    print(authRes.user!.uid);
+    log(authRes.user!.uid);
   }
 
   Future<user_model.User> getUserDetails() async {
@@ -61,11 +57,7 @@ class AuthServices {
   }
 
   Future<void> signOut() async {
-    try {
-      await _auth.signOut();
-      showToast("Signed out!");
-    } catch (e) {
-      showToast(e.toString());
-    }
+    await _auth.signOut();
+    showToast("Signed out!");
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/post.dart';
 import 'package:instagram_clone/models/user.dart';
@@ -7,6 +5,7 @@ import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/services/auth_services.dart';
 import 'package:instagram_clone/services/post_services.dart';
+import 'package:instagram_clone/utils/apputils.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/widgets/follow_button.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _isLoading = false;
       });
     } catch (e) {
-      log(e.toString());
+      showToast(e.toString());
       setState(() {
         _isLoading = false;
       });
@@ -69,82 +68,79 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               centerTitle: false,
             ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(left: 16, top: 20),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 40,
-                          backgroundImage: NetworkImage(user.profilePicture),
+            body: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 16, top: 20),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundImage: NetworkImage(user.profilePicture),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                DetailsItem(
+                                    value: _myPosts.length.toString(),
+                                    section: 'posts'),
+                                DetailsItem(
+                                    value: user.followers.length.toString(),
+                                    section: 'followers'),
+                                DetailsItem(
+                                    value: user.following.length.toString(),
+                                    section: 'following'),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            FollowButton(
+                                backgroundColor: Colors.black38,
+                                borderColor: Colors.grey,
+                                text: "Sign out",
+                                textColor: Colors.white,
+                                function: () => handleSignOut())
+                          ],
                         ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  DetailsItem(
-                                      value: _myPosts.length.toString(),
-                                      section: 'posts'),
-                                  DetailsItem(
-                                      value: user.followers.length.toString(),
-                                      section: 'followers'),
-                                  DetailsItem(
-                                      value: user.following.length.toString(),
-                                      section: 'following'),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              FollowButton(
-                                  backgroundColor: Colors.black38,
-                                  borderColor: Colors.grey,
-                                  text: "Sign out",
-                                  textColor: Colors.white,
-                                  function: () => handleSignOut())
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
-                  const SizedBox(
-                    height: 10,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.only(left: 16),
+                  child: Text(
+                    user.username,
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(fontSize: 16),
                   ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    margin: const EdgeInsets.only(left: 16),
-                    child: Text(
-                      user.username,
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(fontSize: 16),
-                    ),
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.only(left: 16),
+                  child: Text(
+                    user.bio,
+                    textAlign: TextAlign.start,
                   ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    margin: const EdgeInsets.only(left: 16),
-                    child: Text(
-                      user.bio,
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  GridView.count(
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Expanded(
+                  child: GridView.count(
                     crossAxisCount: 3,
                     crossAxisSpacing: 3,
                     mainAxisSpacing: 3,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
                     children: List.generate(
                       _myPosts.length,
                       (index) {
@@ -155,8 +151,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ));
   }
 }

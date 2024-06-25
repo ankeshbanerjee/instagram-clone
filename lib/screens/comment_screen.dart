@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/comment.dart';
@@ -52,7 +50,7 @@ class _CommentScreenState extends State<CommentScreen> {
       });
       showToast("Comment added.");
     } catch (e) {
-      log(e.toString());
+      showToast(e.toString());
       setState(() {
         _isLoading = false;
       });

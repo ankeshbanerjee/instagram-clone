@@ -77,8 +77,7 @@ class _PostCardState extends State<PostCard> {
             setState(() {
               isLikeAnimating = true;
             });
-            await postServices.likePost(
-                postId: postItem.postId, uid: postItem.uid);
+            await postServices.likePost(postId: postItem.postId, uid: user.uid);
           },
           child: Stack(
             alignment: Alignment.center,

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -50,7 +49,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       setState(() {
         _isLoading = false;
       });
-      log(e.toString());
+      showToast(e.toString());
     }
   }
 
