@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/screens/bottomNav/add_post_screen.dart';
+import 'package:instagram_clone/screens/bottomNav/favorites_screen.dart';
 import 'package:instagram_clone/screens/bottomNav/feed_screen.dart';
 import 'package:instagram_clone/screens/bottomNav/profile_screen_bottom_nav.dart';
 import 'package:instagram_clone/screens/bottomNav/search_screen.dart';
@@ -14,8 +15,6 @@ List<Widget> bottomNavPages = [
   const FeedScreen(),
   const SearchScreen(),
   const AddPostScreen(),
-  const Center(
-    child: Text("favorite page"),
-  ),
+  const FavoriteScreen(),
   const ProfileScreen()
 ];

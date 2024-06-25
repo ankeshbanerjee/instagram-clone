@@ -33,7 +33,8 @@ class AuthServices {
         bio: bio,
         profilePicture: picUrl,
         followers: [],
-        following: []);
+        following: [],
+        favorites: []);
 
     CollectionReference usersRef =
         _firestore.collection(DBCollections.users.name);

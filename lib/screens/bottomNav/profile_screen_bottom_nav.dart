@@ -99,8 +99,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: 4,
                             ),
                             FollowButton(
-                                backgroundColor: Colors.black38,
-                                borderColor: Colors.grey,
+                                backgroundColor: Colors.blueGrey.shade900,
+                                borderColor: Colors.blueGrey.shade900,
                                 text: "Sign out",
                                 textColor: Colors.white,
                                 function: () => handleSignOut())

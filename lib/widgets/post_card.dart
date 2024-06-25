@@ -5,6 +5,7 @@ import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/router/args.dart';
 import 'package:instagram_clone/screens/comment_screen.dart';
 import 'package:instagram_clone/services/post_services.dart';
+import 'package:instagram_clone/services/profile_services.dart';
 import 'package:instagram_clone/utils/apputils.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/widgets/like_animation.dart';
@@ -21,12 +22,14 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
-  final postServices = PostServices();
+  final _postServices = PostServices();
+  final _profileServices = ProfileServices();
 
   @override
   Widget build(BuildContext context) {
     final postItem = widget.post;
     final User user = context.watch<UserProvider>().getUser;
+    bool isSaved = user.favorites.contains(postItem.postId);
 
     return Column(
       children: [
@@ -57,7 +60,7 @@ class _PostCardState extends State<PostCard> {
                               children: <Widget>[
                                 SimpleDialogOption(
                                   onPressed: () async {
-                                    postServices.deletePost(
+                                    _postServices.deletePost(
                                         postId: postItem.postId);
                                     Navigator.pop(context);
                                   },
@@ -77,7 +80,8 @@ class _PostCardState extends State<PostCard> {
             setState(() {
               isLikeAnimating = true;
             });
-            await postServices.likePost(postId: postItem.postId, uid: user.uid);
+            await _postServices.likePost(
+                postId: postItem.postId, uid: user.uid);
           },
           child: Stack(
             alignment: Alignment.center,
@@ -115,7 +119,7 @@ class _PostCardState extends State<PostCard> {
               smallLike: true,
               child: IconButton(
                   onPressed: () async {
-                    postServices.likePost(
+                    _postServices.likePost(
                         postId: postItem.postId, uid: user.uid);
                   },
                   icon: postItem.likes.contains(user.uid)
@@ -146,11 +150,47 @@ class _PostCardState extends State<PostCard> {
             //     )),
             const Spacer(),
             IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.bookmark_outline,
-                  size: 30,
-                )),
+                onPressed: () async {
+                  try {
+                    showLoaderDialog(context);
+                    if (!user.favorites.contains(postItem.postId)) {
+                      await _profileServices.addToFavorites(
+                          user.uid, postItem.postId);
+                      if (mounted) {
+                        await context.read<UserProvider>().refreshUser();
+                      }
+                      setState(() {
+                        isSaved = true;
+                      });
+                      if (mounted) {
+                        Navigator.pop(context);
+                      }
+                    } else {
+                      await _profileServices.removeFromFavorites(
+                          user.uid, postItem.postId);
+                      if (mounted) {
+                        await context.read<UserProvider>().refreshUser();
+                      }
+                      setState(() {
+                        isSaved = false;
+                      });
+                      if (mounted) {
+                        Navigator.pop(context);
+                      }
+                    }
+                  } catch (e) {
+                    showToast(e.toString());
+                  }
+                },
+                icon: isSaved
+                    ? const Icon(
+                        Icons.bookmark,
+                        size: 30,
+                      )
+                    : const Icon(
+                        Icons.bookmark_outline,
+                        size: 30,
+                      )),
           ]),
         ),
         Container(

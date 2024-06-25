@@ -42,4 +42,16 @@ class ProfileServices {
       'followers': FieldValue.arrayRemove([uid])
     });
   }
+
+  Future<void> addToFavorites(String uid, String postId) async {
+    await _users.doc(uid).update({
+      'favorites': FieldValue.arrayUnion([postId])
+    });
+  }
+
+  Future<void> removeFromFavorites(String uid, String postId) async {
+    await _users.doc(uid).update({
+      'favorites': FieldValue.arrayRemove([postId])
+    });
+  }
 }

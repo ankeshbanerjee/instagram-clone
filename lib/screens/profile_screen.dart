@@ -134,8 +134,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Container(
                               child: _profile!.followers.contains(user.uid)
                                   ? FollowButton(
-                                      backgroundColor: Colors.black38,
-                                      borderColor: Colors.grey,
+                                      backgroundColor: Colors.blueGrey.shade900,
+                                      borderColor: Colors.blueGrey.shade900,
                                       text: "Unfollow",
                                       textColor: Colors.white,
                                       function: () {

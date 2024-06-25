@@ -6,6 +6,7 @@ class User {
   final String profilePicture;
   final List followers;
   final List following;
+  final List favorites;
   User(
       {required this.username,
       required this.uid,
@@ -13,18 +14,19 @@ class User {
       required this.bio,
       required this.profilePicture,
       required this.followers,
-      required this.following});
+      required this.following,
+      required this.favorites});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      username: json['username'],
-      uid: json['uid'],
-      email: json['email'],
-      bio: json['bio'],
-      profilePicture: json['profilePicture'],
-      followers: json['followers'],
-      following: json['following'],
-    );
+        username: json['username'],
+        uid: json['uid'],
+        email: json['email'],
+        bio: json['bio'],
+        profilePicture: json['profilePicture'],
+        followers: json['followers'],
+        following: json['following'],
+        favorites: json['favorites']);
   }
 
   Map<String, dynamic> toJson() {
@@ -35,7 +37,8 @@ class User {
       'bio': bio,
       'profilePicture': profilePicture,
       'followers': followers,
-      'following': following
+      'following': following,
+      'favorites': favorites
     });
   }
 }

@@ -14,9 +14,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
+  void checkAuth() {
     if (FirebaseAuth.instance.currentUser != null) {
       Future.delayed(const Duration(milliseconds: 1000),
           () => Navigator.pushReplacementNamed(context, HomeScreen.routeName));
@@ -24,6 +22,12 @@ class _SplashScreenState extends State<SplashScreen> {
       Future.delayed(const Duration(milliseconds: 1000),
           () => Navigator.pushReplacementNamed(context, LoginScreen.routeName));
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkAuth();
   }
 
   @override
