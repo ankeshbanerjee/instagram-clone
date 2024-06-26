@@ -5,8 +5,8 @@ import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/services/auth_services.dart';
 import 'package:instagram_clone/services/post_services.dart';
+import 'package:instagram_clone/theme/app_theme.dart';
 import 'package:instagram_clone/utils/apputils.dart';
-import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/widgets/follow_button.dart';
 import 'package:provider/provider.dart';
 
@@ -56,104 +56,120 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final User user = context.watch<UserProvider>().getUser;
-    return _isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: AppBar(
-              backgroundColor: mobileBackgroundColor,
-              title: Text(
-                user.username,
-                style: const TextStyle(fontWeight: FontWeight.w600),
+    final appTheme = AppTheme.of(context)!;
+    return Container(
+      color: appTheme.theme.backgroundColor,
+      child: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+              color: Colors.blue.shade600,
+            ))
+          : Scaffold(
+              appBar: AppBar(
+                backgroundColor: appTheme.theme.backgroundColor,
+                title: Text(
+                  user.username,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: appTheme.theme.primaryTextColor),
+                ),
+                centerTitle: false,
               ),
-              centerTitle: false,
-            ),
-            body: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(left: 16, top: 20),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundImage: NetworkImage(user.profilePicture),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              body: Container(
+                color: appTheme.theme.backgroundColor,
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 16, top: 20),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundImage: NetworkImage(user.profilePicture),
+                          ),
+                          Expanded(
+                            child: Column(
                               children: [
-                                DetailsItem(
-                                    value: _myPosts.length.toString(),
-                                    section: 'posts'),
-                                DetailsItem(
-                                    value: user.followers.length.toString(),
-                                    section: 'followers'),
-                                DetailsItem(
-                                    value: user.following.length.toString(),
-                                    section: 'following'),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    DetailsItem(
+                                        value: _myPosts.length.toString(),
+                                        section: 'posts'),
+                                    DetailsItem(
+                                        value: user.followers.length.toString(),
+                                        section: 'followers'),
+                                    DetailsItem(
+                                        value: user.following.length.toString(),
+                                        section: 'following'),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                                FollowButton(
+                                    backgroundColor:
+                                        appTheme.theme.secondaryBtnColor,
+                                    borderColor:
+                                        appTheme.theme.secondaryBtnColor,
+                                    text: "Sign out",
+                                    textColor: appTheme.theme.primaryTextColor,
+                                    function: () => handleSignOut())
                               ],
                             ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            FollowButton(
-                                backgroundColor: Colors.blueGrey.shade900,
-                                borderColor: Colors.blueGrey.shade900,
-                                text: "Sign out",
-                                textColor: Colors.white,
-                                function: () => handleSignOut())
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.only(left: 16),
-                  child: Text(
-                    user.username,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.only(left: 16),
-                  child: Text(
-                    user.bio,
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 3,
-                    mainAxisSpacing: 3,
-                    children: List.generate(
-                      _myPosts.length,
-                      (index) {
-                        return Image.network(
-                          _myPosts[index].photoUrl,
-                          fit: BoxFit.cover,
-                        );
-                      },
+                          )
+                        ],
+                      ),
                     ),
-                  ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      margin: const EdgeInsets.only(left: 16),
+                      child: Text(
+                        user.username,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: appTheme.theme.primaryTextColor),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      margin: const EdgeInsets.only(left: 16),
+                      child: Text(user.bio,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              color: appTheme.theme.primaryTextColor)),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Expanded(
+                      child: GridView.count(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 3,
+                        mainAxisSpacing: 3,
+                        children: List.generate(
+                          _myPosts.length,
+                          (index) {
+                            return Image.network(
+                              _myPosts[index].photoUrl,
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ));
+              )),
+    );
   }
 }
 
@@ -169,13 +185,17 @@ class DetailsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = AppTheme.of(context)!;
     return Column(
       children: [
         Text(
           value,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+          style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: appTheme.theme.primaryTextColor),
         ),
-        Text(section)
+        Text(section, style: TextStyle(color: appTheme.theme.primaryTextColor))
       ],
     );
   }

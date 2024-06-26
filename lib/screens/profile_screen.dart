@@ -5,8 +5,8 @@ import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/router/args.dart';
 import 'package:instagram_clone/services/post_services.dart';
 import 'package:instagram_clone/services/profile_services.dart';
+import 'package:instagram_clone/theme/app_theme.dart';
 import 'package:instagram_clone/utils/apputils.dart';
-import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/constants.dart';
 import 'package:instagram_clone/widgets/follow_button.dart';
 import 'package:provider/provider.dart';
@@ -88,119 +88,150 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final User user = context.watch<UserProvider>().getUser;
+    final appTheme = AppTheme.of(context)!;
     return _isLoading
-        ? const Center(child: CircularProgressIndicator())
+        ? Expanded(
+            flex: 1,
+            child: Container(
+                color: appTheme.theme.backgroundColor,
+                child: Center(
+                    child: CircularProgressIndicator(
+                  color: Colors.blue.shade600,
+                ))))
         : Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
-              backgroundColor: mobileBackgroundColor,
+              leading: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: appTheme.theme.primaryTextColor,
+                  )),
+              backgroundColor: appTheme.theme.backgroundColor,
               title: Text(
                 _profile!.username,
-                style: const TextStyle(fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: appTheme.theme.primaryTextColor),
               ),
               centerTitle: false,
             ),
-            body: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(left: 16, top: 20),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundImage: NetworkImage(_profile!.profilePicture),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                DetailsItem(
-                                    value: _myPosts.length.toString(),
-                                    section: 'posts'),
-                                DetailsItem(
-                                    value:
-                                        _profile!.followers.length.toString(),
-                                    section: 'followers'),
-                                DetailsItem(
-                                    value:
-                                        _profile!.following.length.toString(),
-                                    section: 'following'),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Container(
-                              child: _profile!.followers.contains(user.uid)
-                                  ? FollowButton(
-                                      backgroundColor: Colors.blueGrey.shade900,
-                                      borderColor: Colors.blueGrey.shade900,
-                                      text: "Unfollow",
-                                      textColor: Colors.white,
-                                      function: () {
-                                        handleUnFollow(user.uid, _profile!.uid);
-                                      })
-                                  : FollowButton(
-                                      backgroundColor: Colors.blue.shade600,
-                                      borderColor: Colors.blue.shade600,
-                                      text: "Follow",
-                                      textColor: Colors.white,
-                                      function: () {
-                                        handleFollow(user.uid, _profile!.uid);
-                                      }),
-                            )
-                          ],
+            body: Container(
+              color: appTheme.theme.backgroundColor,
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(left: 16, top: 20),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundImage:
+                              NetworkImage(_profile!.profilePicture),
                         ),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.only(left: 16),
-                  child: Text(
-                    _profile!.username,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.only(left: 16),
-                  child: Text(
-                    _profile!.bio,
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Expanded(
-                  child: GridView.count(
-                    controller: searchScrollController,
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 3,
-                    mainAxisSpacing: 3,
-                    children: List.generate(
-                      _myPosts.length,
-                      (index) {
-                        return Image.network(
-                          _myPosts[index].photoUrl,
-                          fit: BoxFit.cover,
-                        );
-                      },
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  DetailsItem(
+                                      value: _myPosts.length.toString(),
+                                      section: 'posts'),
+                                  DetailsItem(
+                                      value:
+                                          _profile!.followers.length.toString(),
+                                      section: 'followers'),
+                                  DetailsItem(
+                                      value:
+                                          _profile!.following.length.toString(),
+                                      section: 'following'),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Container(
+                                child: _profile!.followers.contains(user.uid)
+                                    ? FollowButton(
+                                        backgroundColor:
+                                            appTheme.theme.secondaryBtnColor,
+                                        borderColor:
+                                            appTheme.theme.secondaryBtnColor,
+                                        text: "Unfollow",
+                                        textColor:
+                                            appTheme.theme.primaryTextColor,
+                                        function: () {
+                                          handleUnFollow(
+                                              user.uid, _profile!.uid);
+                                        })
+                                    : FollowButton(
+                                        backgroundColor:
+                                            appTheme.theme.primaryBtnColor,
+                                        borderColor:
+                                            appTheme.theme.primaryBtnColor,
+                                        text: "Follow",
+                                        textColor: Colors.white,
+                                        function: () {
+                                          handleFollow(user.uid, _profile!.uid);
+                                        }),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: const EdgeInsets.only(left: 16),
+                    child: Text(
+                      _profile!.username,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontSize: 16, color: appTheme.theme.primaryTextColor),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: const EdgeInsets.only(left: 16),
+                    child: Text(
+                      _profile!.bio,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(color: appTheme.theme.primaryTextColor),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Expanded(
+                    child: GridView.count(
+                      controller: searchScrollController,
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 3,
+                      mainAxisSpacing: 3,
+                      children: List.generate(
+                        _myPosts.length,
+                        (index) {
+                          return Image.network(
+                            _myPosts[index].photoUrl,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ));
   }
 }
@@ -217,13 +248,17 @@ class DetailsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = AppTheme.of(context)!;
     return Column(
       children: [
         Text(
           value,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+          style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: appTheme.theme.primaryTextColor),
         ),
-        Text(section)
+        Text(section, style: TextStyle(color: appTheme.theme.primaryTextColor))
       ],
     );
   }

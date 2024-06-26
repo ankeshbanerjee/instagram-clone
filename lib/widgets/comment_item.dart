@@ -3,7 +3,7 @@ import 'package:instagram_clone/models/comment.dart';
 import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/services/post_services.dart';
-import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -19,6 +19,7 @@ class CommentItem extends StatefulWidget {
 class _CommentItemState extends State<CommentItem> {
   @override
   Widget build(BuildContext context) {
+    final appTheme = AppTheme.of(context)!;
     final User user = context.watch<UserProvider>().getUser;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 6).copyWith(bottom: 18),
@@ -37,21 +38,27 @@ class _CommentItemState extends State<CommentItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   RichText(
-                      text: TextSpan(text: widget.comment.username, children: [
-                    TextSpan(
-                        text:
-                            "  ${timeago.format(widget.comment.datePublished, locale: 'en_short')}",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(color: secondaryColor))
-                  ])),
+                      text: TextSpan(
+                          text: widget.comment.username,
+                          style:
+                              TextStyle(color: appTheme.theme.primaryTextColor),
+                          children: [
+                        TextSpan(
+                            text:
+                                "  ${timeago.format(widget.comment.datePublished, locale: 'en_short')}",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(
+                                    color: appTheme.theme.secondaryTextColor))
+                      ])),
                   const SizedBox(
                     height: 2,
                   ),
                   Text(
                     widget.comment.content,
-                    style: const TextStyle(fontSize: 15),
+                    style: TextStyle(
+                        fontSize: 15, color: appTheme.theme.primaryTextColor),
                   )
                 ],
               ),
@@ -70,13 +77,15 @@ class _CommentItemState extends State<CommentItem> {
                         size: 18,
                         color: Colors.redAccent,
                       )
-                    : const Icon(
+                    : Icon(
                         Icons.favorite_outline,
                         size: 18,
+                        color: appTheme.theme.primaryTextColor,
                       ),
                 Text(
                   widget.comment.likes.length.toString(),
-                  style: const TextStyle(fontSize: 12),
+                  style: TextStyle(
+                      fontSize: 12, color: appTheme.theme.secondaryTextColor),
                 )
               ]),
             )

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/services/post_services.dart';
+import 'package:instagram_clone/theme/app_theme.dart';
 import 'package:instagram_clone/utils/apputils.dart';
-import 'package:instagram_clone/utils/colors.dart';
 import 'package:provider/provider.dart';
 
 class AddPostScreen extends StatefulWidget {
@@ -69,14 +69,20 @@ class _AddPostScreenState extends State<AddPostScreen> {
   @override
   Widget build(BuildContext context) {
     final userProvider = context.watch<UserProvider>();
+    final appTheme = AppTheme.of(context)!;
     return Scaffold(
       appBar: _imageFile != null
           ? AppBar(
-              backgroundColor: mobileBackgroundColor,
+              backgroundColor: appTheme.theme.backgroundColor,
               leading: IconButton(
-                  onPressed: clearImage, icon: const Icon(Icons.arrow_back)),
-              title: const Text(
+                  onPressed: clearImage,
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: appTheme.theme.primaryTextColor,
+                  )),
+              title: Text(
                 "Post Image",
+                style: TextStyle(color: appTheme.theme.primaryTextColor),
               ),
               centerTitle: false,
               actions: [
@@ -95,84 +101,97 @@ class _AddPostScreenState extends State<AddPostScreen> {
             )
           : null,
       body: _imageFile == null
-          ? Center(
-              child: InkWell(
-                onTap: () async {
-                  final ImagePicker picker = ImagePicker();
-                  final XFile? image =
-                      await picker.pickImage(source: ImageSource.gallery);
-                  setState(() {
-                    _imageFile = File(image!.path);
-                  });
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(20),
-                  height: MediaQuery.of(context).size.height / 6,
-                  width: MediaQuery.of(context).size.width / 2,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 0.5,
-                          color:
-                              Theme.of(context).textTheme.titleMedium!.color!),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(10))),
-                  child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.upload,
-                          size: 40,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text("Upload image")
-                      ]),
+          ? Container(
+              color: appTheme.theme.backgroundColor,
+              child: Center(
+                child: InkWell(
+                  onTap: () async {
+                    final ImagePicker picker = ImagePicker();
+                    final XFile? image =
+                        await picker.pickImage(source: ImageSource.gallery);
+                    setState(() {
+                      _imageFile = File(image!.path);
+                    });
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(20),
+                    height: MediaQuery.of(context).size.height / 6,
+                    width: MediaQuery.of(context).size.width / 2,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            width: 0.5,
+                            color: appTheme.theme.secondaryTextColor),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10))),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.upload,
+                            size: 40,
+                            color: appTheme.theme.primaryTextColor,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text("Upload image",
+                              style: TextStyle(
+                                  color: appTheme.theme.primaryTextColor))
+                        ]),
+                  ),
                 ),
               ),
             )
-          : Column(
-              children: [
-                _isLoading ? const LinearProgressIndicator() : Container(),
-                const SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: 24,
-                        backgroundImage:
-                            NetworkImage(userProvider.getUser.profilePicture),
-                      ),
-                      const SizedBox(
-                        width: 14,
-                      ),
-                      Expanded(
-                          child: TextField(
-                        controller: _descController,
-                        decoration: const InputDecoration(
-                            hintText: "Say something about this post"),
-                        onTapOutside: (event) =>
-                            FocusScope.of(context).unfocus(),
-                      ))
-                    ],
+          : Container(
+              color: appTheme.theme.backgroundColor,
+              child: Column(
+                children: [
+                  _isLoading ? const LinearProgressIndicator() : Container(),
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    child: Image.file(_imageFile!),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: 24,
+                          backgroundImage:
+                              NetworkImage(userProvider.getUser.profilePicture),
+                        ),
+                        const SizedBox(
+                          width: 14,
+                        ),
+                        Expanded(
+                            child: TextField(
+                          style:
+                              TextStyle(color: appTheme.theme.primaryTextColor),
+                          controller: _descController,
+                          decoration: InputDecoration(
+                            hintText: "Say something about this post",
+                            hintStyle: TextStyle(
+                                color: appTheme.theme.secondaryTextColor),
+                          ),
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
+                        ))
+                      ],
+                    ),
                   ),
-                )
-              ],
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      child: Image.file(_imageFile!),
+                    ),
+                  )
+                ],
+              ),
             ),
     );
   }

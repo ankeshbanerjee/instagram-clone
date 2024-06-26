@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/theme/app_theme.dart';
 
 class CustomeTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -20,21 +21,29 @@ class _CustomeTextFieldState extends State<CustomeTextField> {
   bool isHidden = true;
   @override
   Widget build(BuildContext context) {
+    final appTheme = AppTheme.of(context);
     return TextField(
       controller: widget.controller,
+      style: TextStyle(color: appTheme!.theme.primaryTextColor),
+      cursorColor: appTheme.theme.secondaryTextColor,
       decoration: InputDecoration(
         hintText: widget.hintText,
+        hintStyle: TextStyle(color: appTheme.theme.secondaryTextColor),
         filled: true,
+        fillColor: appTheme.theme.textFieldFillColor,
         border: const OutlineInputBorder(borderSide: BorderSide.none),
-        focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: 0.5)),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: appTheme.theme.secondaryTextColor, width: 0.5)),
         contentPadding: const EdgeInsets.all(10),
         suffixIcon: widget.isPassword == true
             ? IconButton(
                 onPressed: () => setState(() {
-                      isHidden = !isHidden;
-                    }),
-                icon: Icon(isHidden ? Icons.visibility_off : Icons.visibility))
+                  isHidden = !isHidden;
+                }),
+                icon: Icon(isHidden ? Icons.visibility_off : Icons.visibility),
+                color: appTheme.theme.primaryTextColor,
+              )
             : null,
       ),
       obscureText: widget.isPassword == true ? isHidden : false,

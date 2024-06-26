@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
-import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/theme/app_theme.dart';
 import 'package:instagram_clone/utils/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -32,9 +32,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = AppTheme.of(context)!;
     return isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
+        ? Container(
+            color: appTheme.theme.backgroundColor,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Colors.blue.shade500,
+              ),
+            ),
           )
         : Scaffold(
             // body: IndexedStack(
@@ -70,58 +76,59 @@ class _HomeScreenState extends State<HomeScreen> {
                   pageIndex = value;
                 });
               },
-              backgroundColor: mobileBackgroundColor,
+              backgroundColor: appTheme.theme.backgroundColor,
               iconSize: 30.0,
-              border: const Border(
-                  top: BorderSide(color: secondaryColor, width: 0.25)),
-              items: const [
+              border: Border(
+                  top: BorderSide(
+                      color: appTheme.theme.secondaryTextColor, width: 0.25)),
+              items: [
                 BottomNavigationBarItem(
                     icon: Icon(
                       Icons.home_outlined,
-                      color: secondaryColor,
+                      color: appTheme.theme.secondaryTextColor,
                     ),
                     activeIcon: Icon(
                       Icons.home,
-                      color: primaryColor,
+                      color: appTheme.theme.primaryTextColor,
                     )),
                 BottomNavigationBarItem(
                   icon: Icon(
                     Icons.search_outlined,
-                    color: secondaryColor,
+                    color: appTheme.theme.secondaryTextColor,
                   ),
                   activeIcon: Icon(
                     Icons.search,
-                    color: primaryColor,
+                    color: appTheme.theme.primaryTextColor,
                   ),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
                     Icons.add_circle_outline,
-                    color: secondaryColor,
+                    color: appTheme.theme.secondaryTextColor,
                   ),
                   activeIcon: Icon(
                     Icons.add_circle,
-                    color: primaryColor,
+                    color: appTheme.theme.primaryTextColor,
                   ),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
                     Icons.favorite_outline,
-                    color: secondaryColor,
+                    color: appTheme.theme.secondaryTextColor,
                   ),
                   activeIcon: Icon(
                     Icons.favorite,
-                    color: primaryColor,
+                    color: appTheme.theme.primaryTextColor,
                   ),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
                     Icons.person_outline,
-                    color: secondaryColor,
+                    color: appTheme.theme.secondaryTextColor,
                   ),
                   activeIcon: Icon(
                     Icons.person,
-                    color: primaryColor,
+                    color: appTheme.theme.primaryTextColor,
                   ),
                 ),
               ],

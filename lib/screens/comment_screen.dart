@@ -5,8 +5,8 @@ import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/router/args.dart';
 import 'package:instagram_clone/services/post_services.dart';
+import 'package:instagram_clone/theme/app_theme.dart';
 import 'package:instagram_clone/utils/apputils.dart';
-import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/constants.dart';
 import 'package:instagram_clone/widgets/comment_item.dart';
 import 'package:provider/provider.dart';
@@ -62,19 +62,25 @@ class _CommentScreenState extends State<CommentScreen> {
     final args =
         ModalRoute.of(context)!.settings.arguments as CommentScreenArgs;
     final User user = context.watch<UserProvider>().getUser;
+    final appTheme = AppTheme.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: mobileBackgroundColor,
+        backgroundColor: appTheme.theme.backgroundColor,
         leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: const Icon(Icons.arrow_back)),
-        title: const Text("Comments"),
+            icon: Icon(
+              Icons.arrow_back,
+              color: appTheme.theme.primaryTextColor,
+            )),
+        title: Text("Comments",
+            style: TextStyle(color: appTheme.theme.primaryTextColor)),
         centerTitle: false,
       ),
-      bottomNavigationBar: Padding(
+      bottomNavigationBar: Container(
+        color: appTheme.theme.backgroundColor,
         padding: const EdgeInsets.symmetric(horizontal: 10)
             .copyWith(bottom: MediaQuery.of(context).padding.bottom),
         child: Row(children: [
@@ -83,10 +89,13 @@ class _CommentScreenState extends State<CommentScreen> {
           ),
           Expanded(
               child: TextField(
+            style: TextStyle(color: appTheme.theme.primaryTextColor),
             controller: _commentController,
             decoration: InputDecoration(
                 hintText: "Add comment as ${user.username}",
-                hintStyle: const TextStyle(fontSize: 14),
+                hintStyle: TextStyle(
+                    fontSize: 14,
+                    color: appTheme.theme.primaryTextColor.withOpacity(0.5)),
                 border: const OutlineInputBorder(borderSide: BorderSide.none)),
           )),
           IconButton(
@@ -95,50 +104,55 @@ class _CommentScreenState extends State<CommentScreen> {
                   username: user.username,
                   uid: user.uid,
                   profilePic: user.profilePicture),
-              icon: const Icon(
+              icon: Icon(
                 Icons.send,
                 size: 28,
-                color: blueColor,
+                color: appTheme.theme.primaryBtnColor,
               ))
         ]),
       ),
-      body: Column(
-        children: [
-          _isLoading ? const LinearProgressIndicator() : Container(),
-          const SizedBox(
-            height: 12,
-          ),
-          Expanded(
-            child: StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection(DBCollections.posts.name)
-                  .doc(args.postId)
-                  .collection(DBCollections.comments.name)
-                  .orderBy('datePublished', descending: true)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final List<DocumentSnapshot> comments = snapshot.data!.docs;
-                  return ListView.builder(
-                      itemCount: comments.length,
-                      itemBuilder: (context, index) {
-                        final comment = Comment.fromJson(
-                            comments[index].data() as Map<String, dynamic>);
-                        return CommentItem(
-                            comment: comment, postId: args.postId);
-                      });
-                } else if (snapshot.hasError) {
-                  return const Center(
-                    child: Text("Something Went Wrong!"),
-                  );
-                }
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
+      body: Container(
+        color: appTheme.theme.backgroundColor,
+        child: Column(
+          children: [
+            _isLoading ? const LinearProgressIndicator() : Container(),
+            const SizedBox(
+              height: 12,
             ),
-          )
-        ],
+            Expanded(
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection(DBCollections.posts.name)
+                    .doc(args.postId)
+                    .collection(DBCollections.comments.name)
+                    .orderBy('datePublished', descending: true)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final List<DocumentSnapshot> comments = snapshot.data!.docs;
+                    return ListView.builder(
+                        itemCount: comments.length,
+                        itemBuilder: (context, index) {
+                          final comment = Comment.fromJson(
+                              comments[index].data() as Map<String, dynamic>);
+                          return CommentItem(
+                              comment: comment, postId: args.postId);
+                        });
+                  } else if (snapshot.hasError) {
+                    return const Center(
+                      child: Text("Something Went Wrong!"),
+                    );
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.blue.shade600,
+                    ),
+                  );
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

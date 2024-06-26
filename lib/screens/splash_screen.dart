@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:instagram_clone/screens/home_screen.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
-import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/theme/app_theme.dart';
 
 class SplashScreen extends StatefulWidget {
   static String routeName = '/splash';
@@ -32,14 +32,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = AppTheme.of(context)!;
     return Scaffold(
-        body: Center(
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        SvgPicture.asset(
-          'assets/ic_instagram.svg',
-          colorFilter: const ColorFilter.mode(primaryColor, BlendMode.srcIn),
-        ),
-      ]),
+        body: Container(
+      color: appTheme.theme.backgroundColor,
+      child: Center(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          SvgPicture.asset(
+            'assets/ic_instagram.svg',
+            colorFilter: ColorFilter.mode(
+                appTheme.theme.primaryTextColor, BlendMode.srcIn),
+          ),
+        ]),
+      ),
     ));
   }
 }

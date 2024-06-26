@@ -4,7 +4,7 @@ import 'package:instagram_clone/firebase_options.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/router/routes.dart';
 import 'package:instagram_clone/screens/splash_screen.dart';
-import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -23,12 +23,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Instagram Clone',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark()
-            .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-        initialRoute: SplashScreen.routeName,
-        routes: routes);
+    return ThemeProvider(
+      child: MaterialApp(
+          title: 'Instagram Clone',
+          debugShowCheckedModeBanner: false,
+          initialRoute: SplashScreen.routeName,
+          routes: routes),
+    );
   }
 }
