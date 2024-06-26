@@ -51,6 +51,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       duration: const Duration(milliseconds: 200),
                       curve: Curves.easeIn);
                 }
+                if (pageIndex == 1) {
+                  searchScrollController.animateTo(0,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeIn);
+                }
+                if (pageIndex == 3) {
+                  favoriteScrollController.animateTo(0,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeIn);
+                }
+                if (pageIndex == 4) {
+                  profileScrollController.animateTo(0,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeIn);
+                }
                 setState(() {
                   pageIndex = value;
                 });

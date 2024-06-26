@@ -12,6 +12,9 @@ enum DBCollections { users, posts, comments }
 const userIcon = 'https://cdn-icons-png.freepik.com/512/8742/8742495.png';
 
 ScrollController feedScrollController = ScrollController();
+ScrollController searchScrollController = ScrollController();
+ScrollController favoriteScrollController = ScrollController();
+ScrollController profileScrollController = ScrollController();
 
 List<Widget> bottomNavPages = [
   const FeedScreen(),

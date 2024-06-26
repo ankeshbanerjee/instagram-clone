@@ -7,6 +7,7 @@ import 'package:instagram_clone/services/post_services.dart';
 import 'package:instagram_clone/services/profile_services.dart';
 import 'package:instagram_clone/utils/apputils.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:instagram_clone/utils/constants.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -110,6 +111,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ? const Center(child: CircularProgressIndicator())
                   : _showUsers
                       ? ListView.builder(
+                          controller: searchScrollController,
                           itemCount: _users.length,
                           itemBuilder: (context, index) {
                             final item = _users[index];
@@ -139,6 +141,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           },
                         )
                       : MasonryGridView.count(
+                          controller: searchScrollController,
                           itemCount: _allPosts.length,
                           crossAxisCount: 3,
                           mainAxisSpacing: 3,

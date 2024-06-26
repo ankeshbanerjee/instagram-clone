@@ -43,6 +43,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 if (snapshot.hasData) {
                   final List<DocumentSnapshot> posts = snapshot.data!.docs;
                   return ListView.builder(
+                      controller: favoriteScrollController,
                       itemCount: posts.length,
                       itemBuilder: (context, index) {
                         final post = Post.fromJson(

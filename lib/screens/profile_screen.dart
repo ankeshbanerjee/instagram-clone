@@ -7,6 +7,7 @@ import 'package:instagram_clone/services/post_services.dart';
 import 'package:instagram_clone/services/profile_services.dart';
 import 'package:instagram_clone/utils/apputils.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/utils/constants.dart';
 import 'package:instagram_clone/widgets/follow_button.dart';
 import 'package:provider/provider.dart';
 
@@ -184,6 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 Expanded(
                   child: GridView.count(
+                    controller: searchScrollController,
                     crossAxisCount: 3,
                     crossAxisSpacing: 3,
                     mainAxisSpacing: 3,
