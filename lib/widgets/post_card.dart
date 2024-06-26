@@ -165,6 +165,7 @@ class _PostCardState extends State<PostCard> {
                       if (mounted) {
                         Navigator.pop(context);
                       }
+                      showToast("Added to favorites");
                     } else {
                       await _profileServices.removeFromFavorites(
                           user.uid, postItem.postId);
@@ -177,6 +178,7 @@ class _PostCardState extends State<PostCard> {
                       if (mounted) {
                         Navigator.pop(context);
                       }
+                      showToast("Removed from favorites");
                     }
                   } catch (e) {
                     showToast(e.toString());
