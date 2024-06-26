@@ -45,9 +45,16 @@ class _HomeScreenState extends State<HomeScreen> {
             bottomNavigationBar: CupertinoTabBar(
               height: 60,
               currentIndex: pageIndex,
-              onTap: (value) => setState(() {
-                pageIndex = value;
-              }),
+              onTap: (value) {
+                if (pageIndex == 0) {
+                  feedScrollController.animateTo(0,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeIn);
+                }
+                setState(() {
+                  pageIndex = value;
+                });
+              },
               backgroundColor: mobileBackgroundColor,
               iconSize: 30.0,
               border: const Border(

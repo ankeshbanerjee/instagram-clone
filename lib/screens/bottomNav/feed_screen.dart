@@ -38,6 +38,7 @@ class _FeedScreenState extends State<FeedScreen> {
           if (snapshot.hasData) {
             final List<DocumentSnapshot> posts = snapshot.data!.docs;
             return ListView.builder(
+                controller: feedScrollController,
                 itemCount: posts.length,
                 itemBuilder: (context, index) {
                   final post = Post.fromJson(
