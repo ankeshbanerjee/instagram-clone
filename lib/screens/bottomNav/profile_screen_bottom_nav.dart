@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:instagram_clone/models/post.dart';
 import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
@@ -8,24 +9,23 @@ import 'package:instagram_clone/services/post_services.dart';
 import 'package:instagram_clone/theme/app_theme.dart';
 import 'package:instagram_clone/utils/apputils.dart';
 import 'package:instagram_clone/widgets/follow_button.dart';
-import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final postServices = PostServices();
   bool _isLoading = true;
   List<Post> _myPosts = [];
 
   Future<void> loadPosts() async {
     try {
-      final res = await postServices.getPostsByUid(
-          Provider.of<UserProvider>(context, listen: false).getUser.uid);
+      final res =
+          await postServices.getPostsByUid(ref.watch(userProvider)!.uid);
       setState(() {
         _myPosts = res;
         _isLoading = false;
@@ -41,21 +41,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> handleSignOut() async {
     await AuthServices().signOut();
     if (context.mounted) {
-      context.read<UserProvider>().removeUser();
+      ref.read(userProvider.notifier).removeUser();
       Navigator.pushNamedAndRemoveUntil(
           context, LoginScreen.routeName, (route) => false);
     }
   }
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     loadPosts();
   }
 
   @override
   Widget build(BuildContext context) {
-    final User user = context.watch<UserProvider>().getUser;
+    final User user = ref.watch(userProvider)!;
     final appTheme = AppTheme.of(context)!;
     return Container(
       color: appTheme.theme.backgroundColor,

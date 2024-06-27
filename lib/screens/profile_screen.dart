@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:instagram_clone/models/post.dart';
 import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
@@ -9,17 +10,16 @@ import 'package:instagram_clone/theme/app_theme.dart';
 import 'package:instagram_clone/utils/apputils.dart';
 import 'package:instagram_clone/utils/constants.dart';
 import 'package:instagram_clone/widgets/follow_button.dart';
-import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   static const routeName = '/profile';
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final _postServices = PostServices();
   final _profileServices = ProfileServices();
   bool _isLoading = true;
@@ -51,10 +51,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
     try {
       await _profileServices.follow(uid, idToBeFollowed);
-      if (context.mounted) {
-        await context.read<UserProvider>().refreshUser();
-      }
+      await ref.read(userProvider.notifier).refreshUser();
+      final updatedProfile =
+          await _profileServices.getUserByUid(idToBeFollowed);
       setState(() {
+        _profile = updatedProfile;
         _isLoading = false;
       });
     } catch (e) {
@@ -68,11 +69,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
     try {
       await _profileServices.unfollow(uid, idToBeUnFollowed);
-      if (context.mounted) {
-        await context.read<UserProvider>().refreshUser();
-      }
+      await ref.read(userProvider.notifier).refreshUser();
+      final updatedProfile =
+          await _profileServices.getUserByUid(idToBeUnFollowed);
       setState(() {
         _isLoading = false;
+        _profile = updatedProfile;
       });
     } catch (e) {
       showToast(e.toString());
@@ -87,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final User user = context.watch<UserProvider>().getUser;
+    final User user = ref.watch(userProvider)!;
     final appTheme = AppTheme.of(context)!;
     return _isLoading
         ? Expanded(

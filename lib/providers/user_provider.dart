@@ -1,23 +1,25 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:instagram_clone/models/user.dart' as user_model;
 import 'package:instagram_clone/services/auth_services.dart';
 import 'package:instagram_clone/utils/apputils.dart';
 
-class UserProvider extends ChangeNotifier {
-  user_model.User? _user;
-
-  user_model.User get getUser => _user!;
+class UserProvider extends Notifier<user_model.User?> {
+  @override
+  user_model.User? build() => null;
 
   Future<void> refreshUser() async {
     try {
-      _user = await AuthServices().getUserDetails();
-      notifyListeners();
+      state = await AuthServices().getUserDetails();
     } catch (e) {
       showToast(e.toString());
     }
   }
 
   void removeUser() {
-    _user = null;
+    state = null;
   }
 }
+
+final userProvider = NotifierProvider<UserProvider, user_model.User?>(() {
+  return UserProvider();
+});

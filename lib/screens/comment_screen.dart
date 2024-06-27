@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:instagram_clone/models/comment.dart';
 import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
@@ -9,17 +10,16 @@ import 'package:instagram_clone/theme/app_theme.dart';
 import 'package:instagram_clone/utils/apputils.dart';
 import 'package:instagram_clone/utils/constants.dart';
 import 'package:instagram_clone/widgets/comment_item.dart';
-import 'package:provider/provider.dart';
 
-class CommentScreen extends StatefulWidget {
+class CommentScreen extends ConsumerStatefulWidget {
   static String routeName = "/comment";
   const CommentScreen({super.key});
 
   @override
-  State<CommentScreen> createState() => _CommentScreenState();
+  ConsumerState<CommentScreen> createState() => _CommentScreenState();
 }
 
-class _CommentScreenState extends State<CommentScreen> {
+class _CommentScreenState extends ConsumerState<CommentScreen> {
   final TextEditingController _commentController = TextEditingController();
   bool _isLoading = false;
 
@@ -61,7 +61,7 @@ class _CommentScreenState extends State<CommentScreen> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as CommentScreenArgs;
-    final User user = context.watch<UserProvider>().getUser;
+    final User user = ref.watch(userProvider)!;
     final appTheme = AppTheme.of(context)!;
 
     return Scaffold(

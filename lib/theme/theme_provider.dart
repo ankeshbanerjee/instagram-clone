@@ -16,12 +16,12 @@ class ThemeProvider extends StatefulWidget {
 }
 
 class _ThemeProviderState extends State<ThemeProvider> {
-  late MyTheme _theme;
-  late SharedPreferences _prefs;
+  MyTheme _theme = lightTheme;
+  SharedPreferences? _prefs;
 
   Future<void> setTheme() async {
     _prefs = await SharedPreferences.getInstance();
-    final bool isDark = _prefs.getBool('isDark') ?? false;
+    final bool isDark = _prefs?.getBool('isDark') ?? false;
     setState(() {
       _theme = isDark ? darkTheme : lightTheme;
     });
@@ -34,7 +34,7 @@ class _ThemeProviderState extends State<ThemeProvider> {
   }
 
   void toggleThemeFunction() {
-    _prefs.setBool('isDark', _theme == lightTheme);
+    _prefs?.setBool('isDark', _theme == lightTheme);
     setState(() {
       _theme = _theme == lightTheme ? darkTheme : lightTheme;
     });
