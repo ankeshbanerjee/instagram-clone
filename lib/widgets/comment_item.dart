@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:instagram_clone/models/comment.dart';
 import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/services/post_services.dart';
 import 'package:instagram_clone/theme/app_theme.dart';
-import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class CommentItem extends StatefulWidget {
+class CommentItem extends ConsumerStatefulWidget {
   final String postId;
   final Comment comment;
   const CommentItem({super.key, required this.comment, required this.postId});
 
   @override
-  State<CommentItem> createState() => _CommentItemState();
+  ConsumerState<CommentItem> createState() => _CommentItemState();
 }
 
-class _CommentItemState extends State<CommentItem> {
+class _CommentItemState extends ConsumerState<CommentItem> {
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context)!;
-    final User user = context.watch<UserProvider>().getUser;
+    final User user = ref.watch(userProvider)!;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 6).copyWith(bottom: 18),
       child: Row(

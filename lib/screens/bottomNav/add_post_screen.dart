@@ -1,21 +1,21 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/services/post_services.dart';
 import 'package:instagram_clone/theme/app_theme.dart';
 import 'package:instagram_clone/utils/apputils.dart';
-import 'package:provider/provider.dart';
 
-class AddPostScreen extends StatefulWidget {
+class AddPostScreen extends ConsumerStatefulWidget {
   const AddPostScreen({super.key});
 
   @override
-  State<AddPostScreen> createState() => _AddPostScreenState();
+  ConsumerState<AddPostScreen> createState() => _AddPostScreenState();
 }
 
-class _AddPostScreenState extends State<AddPostScreen> {
+class _AddPostScreenState extends ConsumerState<AddPostScreen> {
   File? _imageFile;
   final _descController = TextEditingController();
   bool _isLoading = false;
@@ -68,7 +68,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = context.watch<UserProvider>();
+    final user = ref.watch(userProvider)!;
     final appTheme = AppTheme.of(context)!;
     return Scaffold(
       appBar: _imageFile != null
@@ -88,9 +88,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               actions: [
                 TextButton(
                   onPressed: () => handleAddPost(
-                      userProvider.getUser.uid,
-                      userProvider.getUser.username,
-                      userProvider.getUser.profilePicture),
+                      user.uid, user.username, user.profilePicture),
                   child: const Text("Post",
                       style: TextStyle(
                           color: Colors.blueAccent,
@@ -158,8 +156,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       children: [
                         CircleAvatar(
                           radius: 24,
-                          backgroundImage:
-                              NetworkImage(userProvider.getUser.profilePicture),
+                          backgroundImage: NetworkImage(user.profilePicture),
                         ),
                         const SizedBox(
                           width: 14,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:instagram_clone/models/post.dart';
 import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
@@ -10,17 +11,16 @@ import 'package:instagram_clone/theme/app_theme.dart';
 import 'package:instagram_clone/utils/apputils.dart';
 import 'package:instagram_clone/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
-class PostCard extends StatefulWidget {
+class PostCard extends ConsumerStatefulWidget {
   final Post post;
   const PostCard({super.key, required this.post});
 
   @override
-  State<PostCard> createState() => _PostCardState();
+  ConsumerState<PostCard> createState() => _PostCardState();
 }
 
-class _PostCardState extends State<PostCard> {
+class _PostCardState extends ConsumerState<PostCard> {
   bool isLikeAnimating = false;
   final _postServices = PostServices();
   final _profileServices = ProfileServices();
@@ -29,7 +29,7 @@ class _PostCardState extends State<PostCard> {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context)!;
     final postItem = widget.post;
-    final User user = context.watch<UserProvider>().getUser;
+    final User user = ref.watch(userProvider)!;
     bool isSaved = user.favorites.contains(postItem.postId);
 
     return Container(
@@ -173,9 +173,7 @@ class _PostCardState extends State<PostCard> {
                       if (!user.favorites.contains(postItem.postId)) {
                         await _profileServices.addToFavorites(
                             user.uid, postItem.postId);
-                        if (mounted) {
-                          await context.read<UserProvider>().refreshUser();
-                        }
+                        await ref.read(userProvider.notifier).refreshUser();
                         setState(() {
                           isSaved = true;
                         });
@@ -186,9 +184,7 @@ class _PostCardState extends State<PostCard> {
                       } else {
                         await _profileServices.removeFromFavorites(
                             user.uid, postItem.postId);
-                        if (mounted) {
-                          await context.read<UserProvider>().refreshUser();
-                        }
+                        await ref.read(userProvider.notifier).refreshUser();
                         setState(() {
                           isSaved = false;
                         });
