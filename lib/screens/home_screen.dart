@@ -25,9 +25,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    loadUser();
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      loadUser();
+    });
   }
 
   @override

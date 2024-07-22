@@ -82,9 +82,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    loadPosts();
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      loadPosts();
+    });
   }
 
   @override
