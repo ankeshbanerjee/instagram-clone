@@ -6,7 +6,7 @@ import 'package:instagram_clone/theme/app_theme.dart';
 import 'package:instagram_clone/utils/constants.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  static String routeName = '/home';
+  static const String routeName = '/home';
   const HomeScreen({super.key});
 
   @override

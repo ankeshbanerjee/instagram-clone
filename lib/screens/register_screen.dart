@@ -9,7 +9,7 @@ import 'package:instagram_clone/utils/constants.dart';
 import 'package:instagram_clone/widgets/text_input_field.dart';
 
 class RegisterScreen extends StatefulWidget {
-  static String routeName = '/register';
+  static const String routeName = '/register';
   const RegisterScreen({super.key});
 
   @override

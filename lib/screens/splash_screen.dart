@@ -6,7 +6,7 @@ import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/theme/app_theme.dart';
 
 class SplashScreen extends StatefulWidget {
-  static String routeName = '/splash';
+  static const String routeName = '/splash';
   const SplashScreen({super.key});
 
   @override

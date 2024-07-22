@@ -8,7 +8,7 @@ import 'package:instagram_clone/utils/apputils.dart';
 import 'package:instagram_clone/widgets/text_input_field.dart';
 
 class LoginScreen extends StatefulWidget {
-  static String routeName = '/login';
+  static const String routeName = '/login';
   const LoginScreen({super.key});
 
   @override

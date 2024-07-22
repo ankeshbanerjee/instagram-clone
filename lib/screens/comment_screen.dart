@@ -12,7 +12,7 @@ import 'package:instagram_clone/utils/constants.dart';
 import 'package:instagram_clone/widgets/comment_item.dart';
 
 class CommentScreen extends ConsumerStatefulWidget {
-  static String routeName = "/comment";
+  static const String routeName = "/comment";
   const CommentScreen({super.key});
 
   @override

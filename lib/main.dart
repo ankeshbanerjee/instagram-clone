@@ -19,12 +19,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeProvider(
+    return const ThemeProvider(
       child: MaterialApp(
-          title: 'Instagram Clone',
-          debugShowCheckedModeBanner: false,
-          initialRoute: SplashScreen.routeName,
-          routes: routes),
+        title: 'Instagram Clone',
+        debugShowCheckedModeBanner: false,
+        initialRoute: SplashScreen.routeName,
+        // routes: routes,
+        onGenerateRoute: onGenerateRoute,
+      ),
     );
   }
 }
