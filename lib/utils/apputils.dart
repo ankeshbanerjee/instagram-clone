@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:instagram_clone/theme/app_theme.dart';
+import 'package:instagram_clone/configs/theme/app_theme.dart';
+
+ScrollController feedScrollController = ScrollController();
+ScrollController searchScrollController = ScrollController();
+ScrollController favoriteScrollController = ScrollController();
+ScrollController profileScrollController = ScrollController();
 
 void showToast(String message) {
   Fluttertoast.showToast(
