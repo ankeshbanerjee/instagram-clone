@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_clone/di/service_locator.dart';
-import 'package:instagram_clone/presentation/common_blocs/bloc/user_bloc.dart';
-import 'package:instagram_clone/presentation/common_widgets/loading_widget.dart';
 import 'package:instagram_clone/presentation/screens/bottomNav/add_post/bloc/add_post_bloc.dart';
 import 'package:instagram_clone/presentation/screens/bottomNav/favorites/bloc/favorites_bloc.dart';
 import 'package:instagram_clone/presentation/screens/bottomNav/feeds/bloc/feed_bloc.dart';
@@ -32,12 +30,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    context.read<UserBloc>().add(RefreshUserEvent());
-    super.initState();
-  }
-
   final _feedTabBloc = FeedBloc(getIt());
   final _searchTabBloc =
       SearchBloc(postRepository: getIt(), profileRepository: getIt());
@@ -67,6 +59,16 @@ class _HomeScreenState extends State<HomeScreen> {
       ];
 
   @override
+  void dispose() {
+    _feedTabBloc.close();
+    _searchTabBloc.close();
+    _addPostTabBloc.close();
+    _favoritesTabBloc.close();
+    _profileTabBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context)!.theme;
     return Scaffold(
@@ -74,25 +76,15 @@ class _HomeScreenState extends State<HomeScreen> {
       //     index: pageIndex,
       //     children:
       //         bottomNavPages), // state of each page is kept intact even after navigating to another screen
-      body: Builder(builder: (context) {
-        final userState = context.watch<UserBloc>().state;
-        final homeState = context.watch<HomeBloc>().state;
-        if (userState is UserLoading) {
-          return Container(
-              color: theme.backgroundColor, child: const LoadingWidget());
-        } else if (userState is UserFetchSuccess && homeState is HomeInitial) {
+      body: BlocBuilder<HomeBloc, HomeState>(builder: (context, homeState) {
+        if (homeState is HomeInitial) {
           return bottomNavPages[homeState.index];
         }
         return Container();
       }),
-      bottomNavigationBar: Builder(builder: (context) {
-        final userState = context.watch<UserBloc>().state;
-        final homeState = context.watch<HomeBloc>().state;
-        if (userState is UserLoading) {
-          return Container(
-              color: theme.backgroundColor, child: const LoadingWidget());
-        }
-        if (userState is UserFetchSuccess && homeState is HomeInitial) {
+      bottomNavigationBar:
+          BlocBuilder<HomeBloc, HomeState>(builder: (context, homeState) {
+        if (homeState is HomeInitial) {
           final pageIndex = homeState.index;
           return CupertinoTabBar(
             height: 60,

@@ -48,3 +48,9 @@ showLoaderDialog(BuildContext context) {
     },
   );
 }
+
+void hideLoaderDialog(BuildContext context) {
+  if (Navigator.canPop(context)) {
+    Navigator.pop(context);
+  }
+}

@@ -24,6 +24,11 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
         child: const HomeScreenWrapper(),
         settings: settings,
       );
+    case LandingScreen.routeName:
+      return pageTransition(
+        child: const LandingScreen(),
+        settings: settings,
+      );
     case CommentScreenWrapper.routeName:
       return pageTransition(
         child: const CommentScreenWrapper(),

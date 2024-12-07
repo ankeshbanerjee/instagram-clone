@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/configs/routes/screens.dart';
 import 'package:instagram_clone/di/service_locator.dart';
 import 'package:instagram_clone/presentation/common_widgets/render_svg.dart';
-import 'package:instagram_clone/presentation/screens/home/home_screen.dart';
-import 'package:instagram_clone/presentation/screens/login/login_screen.dart';
 import 'package:instagram_clone/configs/theme/app_theme.dart';
 import 'package:instagram_clone/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,8 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
       listener: (context, state) {
         if (state is AuthChecked) {
           if (state.isAuthenticated) {
-            Navigator.pushReplacementNamed(
-                context, HomeScreenWrapper.routeName);
+            Navigator.pushReplacementNamed(context, LandingScreen.routeName);
           } else {
             Navigator.pushReplacementNamed(
                 context, LoginScreenWrapper.routeName);

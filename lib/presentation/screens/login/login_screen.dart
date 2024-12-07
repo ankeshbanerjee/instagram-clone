@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:instagram_clone/configs/routes/screens.dart';
 import 'package:instagram_clone/di/service_locator.dart';
-import 'package:instagram_clone/presentation/screens/home/home_screen.dart';
 import 'package:instagram_clone/presentation/screens/login/bloc/login_bloc.dart';
-import 'package:instagram_clone/presentation/screens/register/register_screen.dart';
 import 'package:instagram_clone/services/assets_provider/svg_assets_provider.dart';
 import 'package:instagram_clone/configs/theme/app_theme.dart';
 import 'package:instagram_clone/utils/apputils.dart';
@@ -38,7 +37,7 @@ class LoginScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is LoginSuccess) {
           Navigator.pushNamedAndRemoveUntil(
-              context, HomeScreenWrapper.routeName, (route) => false);
+              context, LandingScreen.routeName, (route) => false);
         } else if (state is LoginFailure) {
           showToast(state.errorMessage);
         }

@@ -38,7 +38,7 @@ class RegisterScreen extends StatelessWidget {
         if (state is RegisterSuccess) {
           showToast("Registered Successfully!");
           Navigator.of(context).pushNamedAndRemoveUntil(
-              HomeScreenWrapper.routeName, (route) => false);
+              LandingScreen.routeName, (route) => false);
         } else if (state is RegisterFailure) {
           showToast(state.errorMessage);
         }

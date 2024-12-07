@@ -49,21 +49,31 @@ class _PostCardContentState extends State<_PostCardContent> {
       listeners: [
         BlocListener<PostCardBloc, PostCardState>(
           listener: (context, postCardWidgetState) {
+            if (postCardWidgetState is PostCardLoading) {
+              showLoaderDialog(context);
+            }
             if (postCardWidgetState is AddToFavoritesSuccess) {
               context.read<UserBloc>().add(RefreshUserEvent());
             } else if (postCardWidgetState is AddToFavoritesFailure) {
+              hideLoaderDialog(context);
               showToast(postCardWidgetState.errorMessage);
             } else if (postCardWidgetState is RemoveFromFavoritesSuccess) {
               context.read<UserBloc>().add(RefreshUserEvent());
             } else if (postCardWidgetState is RemoveFromFavoritesFailure) {
+              hideLoaderDialog(context);
               showToast(postCardWidgetState.errorMessage);
             }
           },
         ),
         BlocListener<UserBloc, UserState>(
           listener: (context, userState) {
-            log("user state: ${userState.runtimeType}");
+            if (userState is UserFetchSuccess) {
+              log("user success");
+              hideLoaderDialog(context);
+            }
             if (userState is UserFetchFailure) {
+              log("user failure");
+              hideLoaderDialog(context);
               showToast(userState.message);
             }
           },
@@ -113,9 +123,6 @@ class _PostCardContentState extends State<_PostCardContent> {
                                       children: <Widget>[
                                         SimpleDialogOption(
                                           onPressed: () {
-                                            // _postServices.deletePost(
-                                            //     postId: postItem.postId);
-                                            // Navigator.pop(context);
                                             context.read<PostCardBloc>().add(
                                                 DeletePost(postItem.postId));
                                           },
@@ -141,8 +148,6 @@ class _PostCardContentState extends State<_PostCardContent> {
                     setState(() {
                       isLikeAnimating = true;
                     });
-                    // await _postServices.likePost(
-                    //     postId: postItem.postId, uid: user.uid);
                     if (userState is UserFetchSuccess) {
                       context.read<PostCardBloc>().add(LikePost(
                           postId: postItem.postId, uid: userState.user.uid));
@@ -186,8 +191,6 @@ class _PostCardContentState extends State<_PostCardContent> {
                       smallLike: true,
                       child: IconButton(
                           onPressed: () {
-                            // _postServices.likePost(
-                            //     postId: postItem.postId, uid: user.uid);
                             if (userState is UserFetchSuccess) {
                               context.read<PostCardBloc>().add(LikePost(
                                   postId: postItem.postId,
@@ -219,41 +222,15 @@ class _PostCardContentState extends State<_PostCardContent> {
                           size: 30,
                           color: appTheme.theme.primaryTextColor,
                         )),
-                    // IconButton(
-                    //     onPressed: () {},
-                    //     icon: const Icon(
-                    //       Icons.send_outlined,
-                    //       size: 30,
-                    //     )),
                     const Spacer(),
                     IconButton(
                         onPressed: () async {
                           if (userState is UserFetchSuccess) {
                             final user = userState.user;
-                            // showLoaderDialog(context);
                             if (!user.favorites.contains(postItem.postId)) {
-                              // await _profileServices.addToFavorites(
-                              //     user.uid, postItem.postId);
-                              // await ref.read(userProvider.notifier).refreshUser();
-                              // setState(() {
-                              //   isSaved = true;
-                              // });
-                              // if (mounted) {
-                              //   Navigator.pop(context);
-                              // }
-                              // showToast("Added to favorites");
                               context.read<PostCardBloc>().add(AddToFavorites(
                                   postId: postItem.postId, uid: user.uid));
                             } else {
-                              // await _profileServices.removeFromFavorites(
-                              //     user.uid, postItem.postId);
-                              // await ref.read(userProvider.notifier).refreshUser();
-                              // setState(() {
-                              //   isSaved = false;
-                              // });
-                              // if (mounted) {
-                              //   Navigator.pop(context);
-                              // }
                               context.read<PostCardBloc>().add(
                                   RemoveFromFavorites(
                                       postId: postItem.postId, uid: user.uid));
