@@ -29,44 +29,55 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.of(context)!;
-    return Builder(builder: (context) {
-      final userState = context.watch<UserBloc>().state;
-      final tabState = context.watch<FavoritesBloc>().state;
-      return Scaffold(
-        appBar: AppBar(
-            centerTitle: false,
-            backgroundColor: appTheme.theme.backgroundColor,
-            title: Text(
-              "Favorites",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: appTheme.theme.primaryTextColor),
-            )),
-        body: userState is UserFetchSuccess && userState.user.favorites.isEmpty
-            ? Container(
-                color: appTheme.theme.backgroundColor,
-                child: Center(
-                  child: Text(
-                    "Nothing to show!",
-                    style: TextStyle(
-                        fontSize: 16, color: appTheme.theme.primaryTextColor),
-                  ),
-                ),
-              )
-            : userState is UserFetchSuccess && tabState is FavoritesFetchSuccess
-                ? Container(
-                    color: appTheme.theme.backgroundColor,
-                    child: ListView.builder(
-                        controller: favoriteScrollController,
-                        itemCount: tabState.posts.length,
-                        itemBuilder: (context, index) {
-                          return PostCard(post: tabState.posts[index]);
-                        }),
-                  )
-                : tabState is FavoritesLoading
-                    ? const LoadingWidget()
-                    : Container(),
-      );
-    });
+    return BlocListener<UserBloc, UserState>(
+      listener: (context, state) {
+        if (state is UserFetchSuccess) {
+          context
+              .read<FavoritesBloc>()
+              .add(FetchFavorites(state.user.favorites));
+        }
+      },
+      child: Builder(builder: (context) {
+        final userState = context.watch<UserBloc>().state;
+        final tabState = context.watch<FavoritesBloc>().state;
+        return Scaffold(
+          appBar: AppBar(
+              centerTitle: false,
+              backgroundColor: appTheme.theme.backgroundColor,
+              title: Text(
+                "Favorites",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: appTheme.theme.primaryTextColor),
+              )),
+          body:
+              userState is UserFetchSuccess && userState.user.favorites.isEmpty
+                  ? Container(
+                      color: appTheme.theme.backgroundColor,
+                      child: Center(
+                        child: Text(
+                          "Nothing to show!",
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: appTheme.theme.primaryTextColor),
+                        ),
+                      ),
+                    )
+                  : tabState is FavoritesFetchSuccess
+                      ? Container(
+                          color: appTheme.theme.backgroundColor,
+                          child: ListView.builder(
+                              controller: favoriteScrollController,
+                              itemCount: tabState.posts.length,
+                              itemBuilder: (context, index) {
+                                return PostCard(post: tabState.posts[index]);
+                              }),
+                        )
+                      : tabState is FavoritesLoading
+                          ? const LoadingWidget()
+                          : Container(),
+        );
+      }),
+    );
   }
 }

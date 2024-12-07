@@ -17,10 +17,9 @@ void main() async {
   );
   serviceLocator();
   Bloc.observer = MyBlocObserver();
-  // runApp(const ProviderScope(child: MyApp()));
   runApp(BlocProvider(
     create: (_) => UserBloc(getIt()),
-    child: const MyApp(),
+    child: const ThemeProvider(child: MyApp()),
   ));
 }
 
@@ -29,14 +28,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ThemeProvider(
-      child: MaterialApp(
-        title: 'Instagram Clone',
-        debugShowCheckedModeBanner: false,
-        initialRoute: SplashScreenWrapper.routeName,
-        // routes: routes,
-        onGenerateRoute: onGenerateRoute,
-      ),
+    return const MaterialApp(
+      title: 'Instagram Clone',
+      debugShowCheckedModeBanner: false,
+      initialRoute: SplashScreenWrapper.routeName,
+      // routes: routes,
+      onGenerateRoute: onGenerateRoute,
     );
   }
 }
