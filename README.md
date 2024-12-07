@@ -1,16 +1,31 @@
-# instagram_clone
+# Description
 
-A new Flutter project.
+App name - **Instagram Clone**
 
-## Getting Started
+BlinkTalk is a full-stack cross-platform Instagram clone app which is made using Flutter.
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+- Post, Like, Comment, Search, Follow, Unfollow etc.
+- Real-time feeds.
+- Supports file-attachment.
+- Both light and dark mode support.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Tech Stack
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter and Dart.
+- Firebase Real-time Database (Cloud Firestore), Firebase Storage.
+- Bloc and Inherited widget for state management.
+- Bloc-pattern for architecture and maintainable code.
+- GetIt for Dependency-injection.
+- Shared Preferences for local data storage.
+
+## Screenshots
+
+| LOGIN                      | HOME TAB                          | PROFILE                      |
+| -------------------------- | --------------------------------- | ---------------------------- |
+| ![](demo/images/Login.png) | ![](demo/images/HomeTabLight.png) | ![](demo/images/Profile.png) |
+
+| HOME TAB (DARK)                  | SEARCH TAB                     | ADD POST TAB                    |
+| -------------------------------- | ------------------------------ | ------------------------------- |
+| ![](demo/images/HomeTabDark.png) | ![](demo/images/SearchTab.png) | ![](demo/images/AddPostTab.png) |

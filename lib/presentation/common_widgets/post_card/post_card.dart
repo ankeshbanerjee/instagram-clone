@@ -62,6 +62,11 @@ class _PostCardContentState extends State<_PostCardContent> {
             } else if (postCardWidgetState is RemoveFromFavoritesFailure) {
               hideLoaderDialog(context);
               showToast(postCardWidgetState.errorMessage);
+            } else if (postCardWidgetState is DeletePostSuccess) {
+              hideLoaderDialog(context);
+            } else if (postCardWidgetState is DeletePostFailure) {
+              hideLoaderDialog(context);
+              showToast(postCardWidgetState.errorMessage);
             }
           },
         ),
