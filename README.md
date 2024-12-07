@@ -14,17 +14,17 @@ BlinkTalk is a full-stack cross-platform Instagram clone app which is made using
 ## Tech Stack
 
 - Flutter and Dart.
-- Firebase Real-time Database (Cloud Firestore), Firebase Storage.
+- Firebase Real-time Database (Cloud Firestore), Firebase Storage, Firebase Auth.
 - Bloc and Inherited widget for state management.
-- Bloc-pattern for architecture and maintainable code.
+- Bloc-pattern for architecture and maintainable codebase.
 - GetIt for Dependency-injection.
 - Shared Preferences for local data storage.
 
 ## Screenshots
 
-| LOGIN                      | HOME TAB                          | PROFILE                      |
-| -------------------------- | --------------------------------- | ---------------------------- |
-| ![](demo/images/Login.png) | ![](demo/images/HomeTabLight.png) | ![](demo/images/Profile.png) |
+| HOME TAB                          | PROFILE                      | COMMENTS                     |
+| --------------------------------- | ---------------------------- | ---------------------------- |
+| ![](demo/images/HomeTabLight.png) | ![](demo/images/Profile.png) | ![](demo/images/Comment.png) |
 
 | HOME TAB (DARK)                  | SEARCH TAB                     | ADD POST TAB                    |
 | -------------------------------- | ------------------------------ | ------------------------------- |
