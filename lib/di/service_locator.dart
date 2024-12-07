@@ -20,14 +20,14 @@ void serviceLocator() {
       () => FirebaseFirestore.instance);
 
   // auth data
-  getIt.registerLazySingleton<AuthDataProvider>(
-      () => AuthDataProvider(auth: getIt(), firestore: getIt()));
+  getIt.registerLazySingleton<AuthDataProvider>(() => AuthDataProvider(
+      auth: getIt(), firestore: getIt(), uploadRepository: getIt()));
   getIt.registerLazySingleton<AuthRepository>(
       () => AuthRepository(authDataProvider: getIt()));
 
   // post data
   getIt.registerLazySingleton<PostDataProvider>(
-      () => PostDataProvider(fireStore: getIt()));
+      () => PostDataProvider(fireStore: getIt(), uploadRepository: getIt()));
   getIt.registerLazySingleton<PostRepository>(
       () => PostRepository(postDataProvider: getIt()));
 

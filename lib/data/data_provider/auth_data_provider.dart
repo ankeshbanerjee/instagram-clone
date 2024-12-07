@@ -3,17 +3,19 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:instagram_clone/data/repository/upload_repository.dart';
 import 'package:instagram_clone/models/user.dart' as user_model;
-import 'package:instagram_clone/services/upload_file.dart';
 import 'package:instagram_clone/utils/constants.dart';
 
 class AuthDataProvider {
   final FirebaseAuth auth;
   final FirebaseFirestore firestore;
+  final UploadRepository uploadRepository;
 
   AuthDataProvider({
     required this.auth,
     required this.firestore,
+    required this.uploadRepository,
   });
 
   Future<void> registerUser({
@@ -27,7 +29,8 @@ class AuthDataProvider {
         email: email, password: password);
 
     final String picUrl = profilePicture != null
-        ? await upload(profilePicture, FileDirectories.profilePicture.name)
+        ? await uploadRepository.upload(
+            profilePicture, FileDirectories.profilePicture.name)
         : userIcon;
 
     final user = user_model.User(

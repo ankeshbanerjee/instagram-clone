@@ -20,7 +20,7 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PostCardBloc(
+      create: (_) => PostCardBloc(
         postRepository: getIt(),
         profileRepository: getIt(),
       ),
@@ -49,20 +49,13 @@ class _PostCardContentState extends State<_PostCardContent> {
       listeners: [
         BlocListener<PostCardBloc, PostCardState>(
           listener: (context, postCardWidgetState) {
-            log("post card state: ${postCardWidgetState.runtimeType}");
-            if (postCardWidgetState is PostCardLoading) {
-              showLoaderDialog(context);
-            } else if (postCardWidgetState is AddToFavoritesSuccess) {
-              Navigator.pop(context);
+            if (postCardWidgetState is AddToFavoritesSuccess) {
               context.read<UserBloc>().add(RefreshUserEvent());
             } else if (postCardWidgetState is AddToFavoritesFailure) {
-              Navigator.pop(context);
               showToast(postCardWidgetState.errorMessage);
             } else if (postCardWidgetState is RemoveFromFavoritesSuccess) {
-              Navigator.pop(context);
               context.read<UserBloc>().add(RefreshUserEvent());
             } else if (postCardWidgetState is RemoveFromFavoritesFailure) {
-              Navigator.pop(context);
               showToast(postCardWidgetState.errorMessage);
             }
           },
@@ -70,17 +63,7 @@ class _PostCardContentState extends State<_PostCardContent> {
         BlocListener<UserBloc, UserState>(
           listener: (context, userState) {
             log("user state: ${userState.runtimeType}");
-            if (userState is UserLoading) {
-              log("user loading");
-              // showLoaderDialog(context);
-            }
-            if (userState is UserFetchSuccess) {
-              log("user success");
-              // Navigator.pop(context);
-            }
             if (userState is UserFetchFailure) {
-              log("user failure");
-              // Navigator.pop(context);
               showToast(userState.message);
             }
           },
@@ -247,7 +230,7 @@ class _PostCardContentState extends State<_PostCardContent> {
                         onPressed: () async {
                           if (userState is UserFetchSuccess) {
                             final user = userState.user;
-// showLoaderDialog(context);
+                            // showLoaderDialog(context);
                             if (!user.favorites.contains(postItem.postId)) {
                               // await _profileServices.addToFavorites(
                               //     user.uid, postItem.postId);

@@ -43,7 +43,7 @@ PageTransition<dynamic> pageTransition(
     {required Widget child, required RouteSettings settings}) {
   return PageTransition(
     child: child,
-    type: PageTransitionType.fade,
+    type: PageTransitionType.rightToLeft,
     settings: settings,
   );
 }

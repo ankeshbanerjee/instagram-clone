@@ -16,7 +16,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<RemoveUserEvent>(_handleRemoveUser);
   }
 
-  FutureOr<void> _handleRefreshUser(
+  Future<void> _handleRefreshUser(
       RefreshUserEvent event, Emitter<UserState> emit) async {
     emit(UserLoading());
     try {

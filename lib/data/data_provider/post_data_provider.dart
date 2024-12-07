@@ -1,15 +1,16 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instagram_clone/data/repository/upload_repository.dart';
 import 'package:instagram_clone/models/comment.dart';
 import 'package:instagram_clone/models/post.dart';
-import 'package:instagram_clone/services/upload_file.dart';
 import 'package:instagram_clone/utils/constants.dart';
 import 'package:uuid/uuid.dart';
 
 class PostDataProvider {
   final FirebaseFirestore fireStore;
   final CollectionReference posts;
-  PostDataProvider({required this.fireStore})
+  final UploadRepository uploadRepository;
+  PostDataProvider({required this.fireStore, required this.uploadRepository})
       : posts = fireStore.collection(DBCollections.posts.name);
 
   Future<void> uploadPost(
@@ -18,7 +19,8 @@ class PostDataProvider {
       required String username,
       required File imageFile,
       required String profileImage}) async {
-    final photoUrl = await upload(imageFile, FileDirectories.postPicture.name);
+    final photoUrl = await uploadRepository.upload(
+        imageFile, FileDirectories.postPicture.name);
     final postId = const Uuid().v1(); // generates a unique id according to time
     final newPost = Post(
         description: desc,
