@@ -21,20 +21,20 @@ class _CustomeTextFieldState extends State<CustomeTextField> {
   bool isHidden = true;
   @override
   Widget build(BuildContext context) {
-    final appTheme = AppTheme.of(context);
+    final theme = AppTheme.of(context)!.theme;
     return TextField(
       controller: widget.controller,
-      style: TextStyle(color: appTheme!.theme.primaryTextColor),
-      cursorColor: appTheme.theme.secondaryTextColor,
+      style: TextStyle(color: theme.primaryTextColor),
+      cursorColor: theme.secondaryTextColor,
       decoration: InputDecoration(
         hintText: widget.hintText,
-        hintStyle: TextStyle(color: appTheme.theme.secondaryTextColor),
+        hintStyle: TextStyle(color: theme.secondaryTextColor),
         filled: true,
-        fillColor: appTheme.theme.textFieldFillColor,
+        fillColor: theme.textFieldFillColor,
         border: const OutlineInputBorder(borderSide: BorderSide.none),
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: appTheme.theme.secondaryTextColor, width: 0.5)),
+            borderSide:
+                BorderSide(color: theme.secondaryTextColor, width: 0.5)),
         contentPadding: const EdgeInsets.all(10),
         suffixIcon: widget.isPassword == true
             ? IconButton(
@@ -42,7 +42,7 @@ class _CustomeTextFieldState extends State<CustomeTextField> {
                   isHidden = !isHidden;
                 }),
                 icon: Icon(isHidden ? Icons.visibility_off : Icons.visibility),
-                color: appTheme.theme.primaryTextColor,
+                color: theme.primaryTextColor,
               )
             : null,
       ),

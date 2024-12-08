@@ -26,7 +26,7 @@ class _ProfileTabScreenState extends State<ProfileTabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = AppTheme.of(context)!;
+    final theme = AppTheme.of(context)!.theme;
     return BlocListener<ProfileBloc, ProfileState>(listener: (context, state) {
       if (state is SignedOut) {
         context.read<UserBloc>().add(RemoveUserEvent());
@@ -37,7 +37,7 @@ class _ProfileTabScreenState extends State<ProfileTabScreen> {
       final userState = context.watch<UserBloc>().state;
       final tabState = context.watch<ProfileBloc>().state;
       return Container(
-        color: appTheme.theme.backgroundColor,
+        color: theme.backgroundColor,
         child: tabState is ProfileLoading
             ? Center(
                 child: CircularProgressIndicator(
@@ -46,17 +46,17 @@ class _ProfileTabScreenState extends State<ProfileTabScreen> {
             : userState is UserFetchSuccess && tabState is ProfileLoaded
                 ? Scaffold(
                     appBar: AppBar(
-                      backgroundColor: appTheme.theme.backgroundColor,
+                      backgroundColor: theme.backgroundColor,
                       title: Text(
                         userState.user.username,
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            color: appTheme.theme.primaryTextColor),
+                            color: theme.primaryTextColor),
                       ),
                       centerTitle: false,
                     ),
                     body: Container(
-                      color: appTheme.theme.backgroundColor,
+                      color: theme.backgroundColor,
                       child: Column(
                         children: [
                           Container(
@@ -96,12 +96,10 @@ class _ProfileTabScreenState extends State<ProfileTabScreen> {
                                       ),
                                       FollowButton(
                                           backgroundColor:
-                                              appTheme.theme.secondaryBtnColor,
-                                          borderColor:
-                                              appTheme.theme.secondaryBtnColor,
+                                              theme.secondaryBtnColor,
+                                          borderColor: theme.secondaryBtnColor,
                                           text: "Sign out",
-                                          textColor:
-                                              appTheme.theme.primaryTextColor,
+                                          textColor: theme.primaryTextColor,
                                           function: () => context
                                               .read<ProfileBloc>()
                                               .add(SignOutEvent()))
@@ -121,8 +119,7 @@ class _ProfileTabScreenState extends State<ProfileTabScreen> {
                               userState.user.username,
                               textAlign: TextAlign.start,
                               style: TextStyle(
-                                  fontSize: 16,
-                                  color: appTheme.theme.primaryTextColor),
+                                  fontSize: 16, color: theme.primaryTextColor),
                             ),
                           ),
                           const SizedBox(
@@ -133,8 +130,8 @@ class _ProfileTabScreenState extends State<ProfileTabScreen> {
                             margin: const EdgeInsets.only(left: 16),
                             child: Text(userState.user.bio,
                                 textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    color: appTheme.theme.primaryTextColor)),
+                                style:
+                                    TextStyle(color: theme.primaryTextColor)),
                           ),
                           const SizedBox(
                             height: 16,

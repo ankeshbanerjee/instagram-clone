@@ -31,7 +31,7 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = AppTheme.of(context)!;
+    final theme = AppTheme.of(context)!.theme;
     return Scaffold(
         body: BlocConsumer<RegisterBloc, RegisterState>(
       listener: (context, state) {
@@ -45,7 +45,7 @@ class RegisterScreen extends StatelessWidget {
       },
       builder: (context, state) {
         return Container(
-          color: appTheme.theme.backgroundColor,
+          color: theme.backgroundColor,
           child: SafeArea(
               child: Container(
             width: double.infinity,
@@ -69,7 +69,7 @@ class RegisterScreen extends StatelessWidget {
                         child: IconButton(
                           style: ButtonStyle(
                               backgroundColor: WidgetStateProperty.all(
-                                  appTheme.theme.primaryBtnColor),
+                                  theme.primaryBtnColor),
                               padding: WidgetStateProperty.all(
                                   const EdgeInsets.all(10))),
                           onPressed: () {
@@ -113,7 +113,7 @@ class RegisterScreen extends StatelessWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(
-                        color: appTheme.theme.primaryBtnColor,
+                        color: theme.primaryBtnColor,
                         borderRadius:
                             const BorderRadius.all(Radius.circular(4))),
                     child: state is RegisterLoading
@@ -133,7 +133,7 @@ class RegisterScreen extends StatelessWidget {
                   children: [
                     Text(
                       "Already have an account? ",
-                      style: TextStyle(color: appTheme.theme.primaryTextColor),
+                      style: TextStyle(color: theme.primaryTextColor),
                     ),
                     InkWell(
                       onTap: () {
@@ -143,7 +143,7 @@ class RegisterScreen extends StatelessWidget {
                         "Login",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: appTheme.theme.primaryTextColor),
+                            color: theme.primaryTextColor),
                       ),
                     )
                   ],

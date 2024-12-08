@@ -31,7 +31,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = AppTheme.of(context)!;
+    final theme = AppTheme.of(context)!.theme;
     return Scaffold(
         body: BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
@@ -44,7 +44,7 @@ class LoginScreen extends StatelessWidget {
       },
       builder: (context, state) {
         return Container(
-          color: appTheme.theme.backgroundColor,
+          color: theme.backgroundColor,
           child: SafeArea(
               child: Container(
             width: double.infinity,
@@ -56,8 +56,8 @@ class LoginScreen extends StatelessWidget {
                 SvgPicture.asset(
                   SvgAssetsProvider.instagram,
                   height: 60,
-                  colorFilter: ColorFilter.mode(
-                      appTheme.theme.primaryTextColor, BlendMode.srcIn),
+                  colorFilter:
+                      ColorFilter.mode(theme.primaryTextColor, BlendMode.srcIn),
                 ),
                 const SizedBox(height: 66),
                 CustomeTextField(
@@ -82,7 +82,7 @@ class LoginScreen extends StatelessWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(
-                        color: appTheme.theme.primaryBtnColor,
+                        color: theme.primaryBtnColor,
                         borderRadius:
                             const BorderRadius.all(Radius.circular(4))),
                     child: state is LoginLoading
@@ -101,8 +101,7 @@ class LoginScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Don't have an account? ",
-                        style:
-                            TextStyle(color: appTheme.theme.primaryTextColor)),
+                        style: TextStyle(color: theme.primaryTextColor)),
                     InkWell(
                       onTap: () {
                         Navigator.pushNamed(
@@ -112,7 +111,7 @@ class LoginScreen extends StatelessWidget {
                         "Sign Up",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: appTheme.theme.primaryTextColor),
+                            color: theme.primaryTextColor),
                       ),
                     )
                   ],

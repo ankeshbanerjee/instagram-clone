@@ -11,7 +11,7 @@ class AddPostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = AppTheme.of(context)!;
+    final theme = AppTheme.of(context)!.theme;
     return Builder(
       builder: (context) {
         final tabState = context.watch<AddPostBloc>().state;
@@ -19,7 +19,7 @@ class AddPostScreen extends StatelessWidget {
         return Scaffold(
           appBar: tabState is ImagePicked || tabState is AddPostLoading
               ? AppBar(
-                  backgroundColor: appTheme.theme.backgroundColor,
+                  backgroundColor: theme.backgroundColor,
                   leading: IconButton(
                       onPressed: () {
                         context.read<AddPostBloc>().add(ClearImageEvent());
@@ -27,11 +27,11 @@ class AddPostScreen extends StatelessWidget {
                       },
                       icon: Icon(
                         Icons.arrow_back,
-                        color: appTheme.theme.primaryTextColor,
+                        color: theme.primaryTextColor,
                       )),
                   title: Text(
                     "Post Image",
-                    style: TextStyle(color: appTheme.theme.primaryTextColor),
+                    style: TextStyle(color: theme.primaryTextColor),
                   ),
                   centerTitle: false,
                   actions: [
@@ -62,7 +62,7 @@ class AddPostScreen extends StatelessWidget {
               : null,
           body: tabState is AddPostInitial || tabState is AddPostSuccess
               ? Container(
-                  color: appTheme.theme.backgroundColor,
+                  color: theme.backgroundColor,
                   child: Center(
                     child: InkWell(
                       onTap: () {
@@ -75,8 +75,7 @@ class AddPostScreen extends StatelessWidget {
                         width: MediaQuery.of(context).size.width / 2,
                         decoration: BoxDecoration(
                             border: Border.all(
-                                width: 0.5,
-                                color: appTheme.theme.secondaryTextColor),
+                                width: 0.5, color: theme.secondaryTextColor),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(10))),
                         child: Column(
@@ -85,21 +84,21 @@ class AddPostScreen extends StatelessWidget {
                               Icon(
                                 Icons.upload,
                                 size: 40,
-                                color: appTheme.theme.primaryTextColor,
+                                color: theme.primaryTextColor,
                               ),
                               const SizedBox(
                                 height: 10,
                               ),
                               Text("Upload image",
-                                  style: TextStyle(
-                                      color: appTheme.theme.primaryTextColor))
+                                  style:
+                                      TextStyle(color: theme.primaryTextColor))
                             ]),
                       ),
                     ),
                   ),
                 )
               : Container(
-                  color: appTheme.theme.backgroundColor,
+                  color: theme.backgroundColor,
                   child: Column(
                     children: [
                       tabState is AddPostLoading
@@ -125,13 +124,12 @@ class AddPostScreen extends StatelessWidget {
                             ),
                             Expanded(
                                 child: TextField(
-                              style: TextStyle(
-                                  color: appTheme.theme.primaryTextColor),
+                              style: TextStyle(color: theme.primaryTextColor),
                               controller: _descController,
                               decoration: InputDecoration(
                                 hintText: "Say something about this post",
-                                hintStyle: TextStyle(
-                                    color: appTheme.theme.secondaryTextColor),
+                                hintStyle:
+                                    TextStyle(color: theme.secondaryTextColor),
                               ),
                               onTapOutside: (event) =>
                                   FocusScope.of(context).unfocus(),

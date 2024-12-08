@@ -42,7 +42,7 @@ class _PostCardContentState extends State<_PostCardContent> {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = AppTheme.of(context)!;
+    final theme = AppTheme.of(context)!.theme;
     final postItem = widget.post;
 
     return MultiBlocListener(
@@ -89,7 +89,7 @@ class _PostCardContentState extends State<_PostCardContent> {
           final userState = context.watch<UserBloc>().state;
           final widgetState = context.watch<PostCardBloc>().state;
           return Container(
-            color: appTheme.theme.backgroundColor,
+            color: theme.backgroundColor,
             child: Column(
               children: [
                 Padding(
@@ -103,8 +103,7 @@ class _PostCardContentState extends State<_PostCardContent> {
                         width: 10,
                       ),
                       Text(postItem.username,
-                          style: TextStyle(
-                              color: appTheme.theme.primaryTextColor)),
+                          style: TextStyle(color: theme.primaryTextColor)),
                       const Spacer(),
                       IconButton(
                           onPressed: () {
@@ -116,14 +115,13 @@ class _PostCardContentState extends State<_PostCardContent> {
                                   context: context,
                                   builder: (_) {
                                     return SimpleDialog(
-                                      backgroundColor: appTheme.theme.isDark
+                                      backgroundColor: theme.isDark
                                           ? Colors.grey.shade800
                                           : Colors.white,
                                       title: Text(
                                         'Actions',
                                         style: TextStyle(
-                                            color: appTheme
-                                                .theme.primaryTextColor),
+                                            color: theme.primaryTextColor),
                                       ),
                                       children: <Widget>[
                                         SimpleDialogOption(
@@ -133,8 +131,8 @@ class _PostCardContentState extends State<_PostCardContent> {
                                           },
                                           child: Text('Delete Post',
                                               style: TextStyle(
-                                                  color: appTheme
-                                                      .theme.primaryTextColor)),
+                                                  color:
+                                                      theme.primaryTextColor)),
                                         ),
                                       ],
                                     );
@@ -143,7 +141,7 @@ class _PostCardContentState extends State<_PostCardContent> {
                           },
                           icon: Icon(
                             Icons.more_horiz,
-                            color: appTheme.theme.primaryTextColor,
+                            color: theme.primaryTextColor,
                           ))
                     ],
                   ),
@@ -212,7 +210,7 @@ class _PostCardContentState extends State<_PostCardContent> {
                               : Icon(
                                   Icons.favorite_outline,
                                   size: 30,
-                                  color: appTheme.theme.primaryTextColor,
+                                  color: theme.primaryTextColor,
                                 )),
                     ),
                     IconButton(
@@ -225,7 +223,7 @@ class _PostCardContentState extends State<_PostCardContent> {
                         icon: Icon(
                           Icons.comment_outlined,
                           size: 30,
-                          color: appTheme.theme.primaryTextColor,
+                          color: theme.primaryTextColor,
                         )),
                     const Spacer(),
                     IconButton(
@@ -248,12 +246,12 @@ class _PostCardContentState extends State<_PostCardContent> {
                             ? Icon(
                                 Icons.bookmark,
                                 size: 30,
-                                color: appTheme.theme.primaryTextColor,
+                                color: theme.primaryTextColor,
                               )
                             : Icon(
                                 Icons.bookmark_outline,
                                 size: 30,
-                                color: appTheme.theme.primaryTextColor,
+                                color: theme.primaryTextColor,
                               )),
                   ]),
                 ),
@@ -261,7 +259,7 @@ class _PostCardContentState extends State<_PostCardContent> {
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.only(left: 10, bottom: 4),
                   child: Text('${postItem.likes.length} likes',
-                      style: TextStyle(color: appTheme.theme.primaryTextColor)),
+                      style: TextStyle(color: theme.primaryTextColor)),
                 ),
                 Container(
                   alignment: Alignment.centerLeft,
@@ -269,8 +267,7 @@ class _PostCardContentState extends State<_PostCardContent> {
                   child: RichText(
                     softWrap: true,
                     text: TextSpan(
-                        style:
-                            TextStyle(color: appTheme.theme.primaryTextColor),
+                        style: TextStyle(color: theme.primaryTextColor),
                         children: [
                           TextSpan(
                             text: postItem.username,
@@ -293,8 +290,10 @@ class _PostCardContentState extends State<_PostCardContent> {
                               CommentScreenArgs(postId: postItem.postId));
                     },
                     child: Text('View all ${postItem.commentCount} comments',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: appTheme.theme.secondaryTextColor)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: theme.secondaryTextColor)),
                   ),
                 ),
                 Container(
@@ -303,8 +302,7 @@ class _PostCardContentState extends State<_PostCardContent> {
                   child: Text(
                       DateFormat.yMMMEd().format(postItem.datePublished),
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: appTheme.theme.secondaryTextColor,
-                          fontSize: 12)),
+                          color: theme.secondaryTextColor, fontSize: 12)),
                 ),
               ],
             ),

@@ -28,7 +28,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = AppTheme.of(context)!;
+    final theme = AppTheme.of(context)!.theme;
     return BlocListener<UserBloc, UserState>(
       listener: (context, state) {
         if (state is UserFetchSuccess) {
@@ -43,29 +43,27 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         return Scaffold(
           appBar: AppBar(
               centerTitle: false,
-              backgroundColor: appTheme.theme.backgroundColor,
+              backgroundColor: theme.backgroundColor,
               title: Text(
                 "Favorites",
                 style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: appTheme.theme.primaryTextColor),
+                    fontWeight: FontWeight.w600, color: theme.primaryTextColor),
               )),
           body:
               userState is UserFetchSuccess && userState.user.favorites.isEmpty
                   ? Container(
-                      color: appTheme.theme.backgroundColor,
+                      color: theme.backgroundColor,
                       child: Center(
                         child: Text(
                           "Nothing to show!",
                           style: TextStyle(
-                              fontSize: 16,
-                              color: appTheme.theme.primaryTextColor),
+                              fontSize: 16, color: theme.primaryTextColor),
                         ),
                       ),
                     )
                   : tabState is FavoritesFetchSuccess
                       ? Container(
-                          color: appTheme.theme.backgroundColor,
+                          color: theme.backgroundColor,
                           child: ListView.builder(
                               controller: favoriteScrollController,
                               itemCount: tabState.posts.length,

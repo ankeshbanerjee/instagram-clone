@@ -47,13 +47,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = AppTheme.of(context)!;
+    final theme = AppTheme.of(context)!.theme;
     return Builder(builder: (context) {
       final userState = context.watch<UserBloc>().state;
       final screenState = context.watch<ProfileScreenBloc>().state;
       return screenState is ProfileScreenLoading
           ? Container(
-              decoration: BoxDecoration(color: appTheme.theme.backgroundColor),
+              decoration: BoxDecoration(color: theme.backgroundColor),
               child: const LoadingWidget(),
             )
           : Scaffold(
@@ -66,20 +66,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                           icon: Icon(
                             Icons.arrow_back,
-                            color: appTheme.theme.primaryTextColor,
+                            color: theme.primaryTextColor,
                           )),
-                      backgroundColor: appTheme.theme.backgroundColor,
+                      backgroundColor: theme.backgroundColor,
                       title: Text(
                         screenState.profile.username,
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            color: appTheme.theme.primaryTextColor),
+                            color: theme.primaryTextColor),
                       ),
                       centerTitle: false,
                     )
                   : null,
               body: Container(
-                color: appTheme.theme.backgroundColor,
+                color: theme.backgroundColor,
                 child: screenState is FetchPostsAndProfileSuccess &&
                         userState is UserFetchSuccess
                     ? Column(
@@ -123,13 +123,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         child: screenState.profile.followers
                                                 .contains(userState.user.uid)
                                             ? FollowButton(
-                                                backgroundColor: appTheme
-                                                    .theme.secondaryBtnColor,
-                                                borderColor: appTheme
-                                                    .theme.secondaryBtnColor,
+                                                backgroundColor:
+                                                    theme.secondaryBtnColor,
+                                                borderColor:
+                                                    theme.secondaryBtnColor,
                                                 text: "Unfollow",
-                                                textColor: appTheme
-                                                    .theme.primaryTextColor,
+                                                textColor:
+                                                    theme.primaryTextColor,
                                                 function: () {
                                                   context
                                                       .read<ProfileScreenBloc>()
@@ -139,10 +139,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               .profile.uid));
                                                 })
                                             : FollowButton(
-                                                backgroundColor: appTheme
-                                                    .theme.primaryBtnColor,
-                                                borderColor: appTheme
-                                                    .theme.primaryBtnColor,
+                                                backgroundColor:
+                                                    theme.primaryBtnColor,
+                                                borderColor:
+                                                    theme.primaryBtnColor,
                                                 text: "Follow",
                                                 textColor: Colors.white,
                                                 function: () {
@@ -170,8 +170,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               screenState.profile.username,
                               textAlign: TextAlign.start,
                               style: TextStyle(
-                                  fontSize: 16,
-                                  color: appTheme.theme.primaryTextColor),
+                                  fontSize: 16, color: theme.primaryTextColor),
                             ),
                           ),
                           const SizedBox(
@@ -183,8 +182,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: Text(
                               screenState.profile.bio,
                               textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  color: appTheme.theme.primaryTextColor),
+                              style: TextStyle(color: theme.primaryTextColor),
                             ),
                           ),
                           const SizedBox(

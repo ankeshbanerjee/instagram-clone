@@ -19,14 +19,13 @@ void showToast(String message) {
 }
 
 showLoaderDialog(BuildContext context) {
-  final appTheme = AppTheme.of(context);
+  final theme = AppTheme.of(context)!.theme;
   showDialog(
     barrierDismissible: false,
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        backgroundColor:
-            appTheme!.theme.isDark ? Colors.grey.shade800 : Colors.white,
+        backgroundColor: theme.isDark ? Colors.grey.shade800 : Colors.white,
         content: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,8 +38,7 @@ showLoaderDialog(BuildContext context) {
                 margin: const EdgeInsets.only(left: 20),
                 child: Text(
                   "Loading...",
-                  style: TextStyle(
-                      fontSize: 16, color: appTheme.theme.primaryTextColor),
+                  style: TextStyle(fontSize: 16, color: theme.primaryTextColor),
                 )),
           ],
         ),
